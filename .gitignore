@@ -1,0 +1,15 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Runtime caches and logs
+.cache/
+*.log
+
+# Dependencies (if any used in development)
+node_modules/
+
+# OS metadata
+.DS_Store
+Thumbs.db
