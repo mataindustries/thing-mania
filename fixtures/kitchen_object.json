@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.3.0",
+  "source": "fixture_kitchen_object",
+  "detected_objects": [
+    {
+      "id": "obj_sponge_1",
+      "label": "Soggy Kitchen Sponge",
+      "confidence": 0.96,
+      "bounding_box": [0.25, 0.2, 0.75, 0.8]
+    },
+    {
+      "id": "obj_soap_1",
+      "label": "Dish Soap Bottle",
+      "confidence": 0.89,
+      "bounding_box": [0.05, 0.05, 0.5, 0.35]
+    },
+    {
+      "id": "obj_sink_1",
+      "label": "Stainless Steel Sink",
+      "confidence": 0.84,
+      "bounding_box": [0.1, 0.1, 0.95, 0.95]
+    }
+  ],
+  "selected_object": {
+    "id": "obj_sponge_1",
+    "label": "Soggy Kitchen Sponge",
+    "role": "Absorbent Moisture Commander",
+    "description": "Yellow cellulose sponge soaked in soapy suds and sheer determination."
+  },
+  "whimsical_role": "Absorbent Moisture Commander & Suds Launcher",
+  "announcer_lines": {
+    "intro": "SOGGY KITCHEN SPONGE DETECTED! Prepare for extreme, squeaky, suds-powered destruction.",
+    "round1": {
+      "intro": "SCRUB THE HAUNTED HOUSE: Pull back the giant wet sponge and wash away the paranormal infestation!",
+      "win": "SQUEAKY CLEAN EVICTION: Ghosts wiped out without a single water spot left on the floorboards!",
+      "lose": "NEEDS MORE DETERGENT: The cobwebs absorbed the impact. Grab the steel wool!"
+    },
+    "round2": {
+      "intro": "ALIEN DISHWASHING EMERGENCY: The mothership galley ran out of sponges! Tap to beam it up!",
+      "win": "DISHES SAVED: Extraterrestrial crew celebrated the arrival of industrial-grade cellulose!",
+      "lose": "DROPPED IN THE DISHWATER: The tractor beam slipped on the soapy bubbles!"
+    },
+    "round3": {
+      "intro": "VOLCANO SIZZLE: The lava is boiling hot! Keep the damp sponge from drying out!",
+      "win": "STILL DAMP: You dodged every flaming cinder and kept your soapy bubbles intact!",
+      "lose": "DRIED TO A CRISP: The magma toasted the sponge into a crusty crouton!"
+    },
+    "summary": "CLEANUP COMPLETE: The kitchen sponge scrubbed haunted houses, saved alien galleys and survived volcanic sizzle."
+  },
+  "round_modifiers": {
+    "round1_wreck": {
+      "launch_impulse": 2.1,
+      "time_limit": 10.0,
+      "wreck_scale": 1.25,
+      "theme_title": "HAUNTED SINK SCRUB",
+      "theme_accent": "#ffee32"
+    },
+    "round2_beam": {
+      "ufo_speed_mult": 0.90,
+      "beam_window_px": 78,
+      "target_catches": 2,
+      "time_limit": 11.0,
+      "theme_title": "GALACTIC GALLEY ABDUCTION",
+      "theme_accent": "#38b000",
+      "decoys": ["BURNT TOAST", "SOUP CAN"]
+    },
+    "round3_lava": {
+      "rock_speed_min": 200,
+      "rock_speed_max": 280,
+      "spawn_interval": 0.58,
+      "hearts": 3,
+      "time_limit": 10.5,
+      "theme_title": "VOLCANIC STEAM BATH",
+      "theme_accent": "#ff7b00"
+    }
+  }
+}

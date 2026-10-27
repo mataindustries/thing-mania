@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.3.0",
+  "source": "fixture_toy_car",
+  "detected_objects": [
+    {
+      "id": "obj_car_1",
+      "label": "Vintage Die-Cast Hot Rod",
+      "confidence": 0.98,
+      "bounding_box": [0.2, 0.15, 0.8, 0.85]
+    },
+    {
+      "id": "obj_track_1",
+      "label": "Plastic Race Track Segment",
+      "confidence": 0.88,
+      "bounding_box": [0.75, 0.05, 0.95, 0.95]
+    },
+    {
+      "id": "obj_wheel_1",
+      "label": "Spare Rubber Tire",
+      "confidence": 0.81,
+      "bounding_box": [0.1, 0.7, 0.3, 0.9]
+    }
+  ],
+  "selected_object": {
+    "id": "obj_car_1",
+    "label": "Vintage Die-Cast Hot Rod",
+    "role": "V8 Supercharged Battering Ram",
+    "description": "Heavy zinc-alloy classic speedster with flame decals and reckless momentum."
+  },
+  "whimsical_role": "V8 Supercharged Battering Ram & Alien Dragster",
+  "announcer_lines": {
+    "intro": "VINTAGE DIE-CAST HOT ROD DRAFTED! Rev the engine and brace for reckless arcade physics.",
+    "round1": {
+      "intro": "WRECK THE HOUSE: Floor the pedal on the wrecking chain and crash the haunted mansion!",
+      "win": "SPEED LIMIT VIOLATION: The manor collapsed into kindling! 500 horsepower ghost eviction!",
+      "lose": "STALLED OUT: The Victorian walls survived your metal bumper. Check the spark plugs!"
+    },
+    "round2": {
+      "intro": "ALIEN SPEED TRAP: The UFO radar clocked your hot rod at Mach 2! Align under the tractor beam.",
+      "win": "INTERGALACTIC TOW TRUCK: Aliens beamed up the hot rod to join the mothership drag race!",
+      "lose": "RADAR DETECTOR WORKED: The UFO beam missed! You outran the alien speed patrol!"
+    },
+    "round3": {
+      "intro": "VOLCANO DRAG STRIP: Dodge high-velocity molten boulders on the magma superhighway!",
+      "win": "SMOKING TIRES: You drifted past the eruption and reached the checkered flag alive!",
+      "lose": "BLOWN GASKET: A giant magma rock flattened your hot rod chassis. Totaled!"
+    },
+    "summary": "SPEED DEMON INCIDENT: The die-cast racer survived supernatural demolition, alien abduction and volcanic drag racing."
+  },
+  "round_modifiers": {
+    "round1_wreck": {
+      "launch_impulse": 3.2,
+      "time_limit": 8.0,
+      "wreck_scale": 1.15,
+      "theme_title": "DEMOLITION SPEEDWAY",
+      "theme_accent": "#ff4d6d"
+    },
+    "round2_beam": {
+      "ufo_speed_mult": 1.25,
+      "beam_window_px": 62,
+      "target_catches": 2,
+      "time_limit": 9.5,
+      "theme_title": "MOTHERSHIP SPEED TRAP",
+      "theme_accent": "#00f5d4",
+      "decoys": ["TRAFFIC CONE", "RACE FLAG"]
+    },
+    "round3_lava": {
+      "rock_speed_min": 260,
+      "rock_speed_max": 345,
+      "spawn_interval": 0.65,
+      "hearts": 2,
+      "time_limit": 9.0,
+      "theme_title": "MAGMA HIGHWAY",
+      "theme_accent": "#ff9e00"
+    }
+  }
+}

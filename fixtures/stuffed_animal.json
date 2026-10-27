@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.3.0",
+  "source": "fixture_stuffed_animal",
+  "detected_objects": [
+    {
+      "id": "obj_bear_1",
+      "label": "Professor Fluffington (Plush Bear)",
+      "confidence": 0.97,
+      "bounding_box": [0.15, 0.2, 0.85, 0.8]
+    },
+    {
+      "id": "obj_blanket_1",
+      "label": "Knitted Throw Blanket",
+      "confidence": 0.91,
+      "bounding_box": [0.05, 0.5, 0.45, 0.95]
+    },
+    {
+      "id": "obj_glasses_1",
+      "label": "Reading Spectacles",
+      "confidence": 0.85,
+      "bounding_box": [0.3, 0.25, 0.45, 0.45]
+    }
+  ],
+  "selected_object": {
+    "id": "obj_bear_1",
+    "label": "Professor Fluffington (Plush Bear)",
+    "role": "Diplomatic Plush Ambassador",
+    "description": "Well-loved brown teddy bear with button eyes and an honorary doctorate in chaotic arcade physics."
+  },
+  "whimsical_role": "Diplomatic Plush Ambassador & Cuddly Meteor",
+  "announcer_lines": {
+    "intro": "PROFESSOR FLUFFINGTON ARRIVES! Armed with button eyes, polyester fluff, and zero fear.",
+    "round1": {
+      "intro": "CUDDLY DEMOLITION: Swing the distinguished professor through the front door of the spooky manor!",
+      "win": "MAXIMUM FLUFF IMPACT: The ghosts were hugged into peaceful submission and relocated!",
+      "lose": "MILD TUMBLE: The teddy bear bounced gently off the porch. Time for afternoon tea!"
+    },
+    "round2": {
+      "intro": "ALIEN CUDDLE PROTOCOL: Extraterrestrial scientists spotted high plush levels! Abduct the bear!",
+      "win": "INTERSTELLAR EMBRACE: Alien empire pacified by overwhelming softness!",
+      "lose": "BUTTON LOSS AVOIDED: The tractor beam malfunctioned; teddy stayed grounded!"
+    },
+    "round3": {
+      "intro": "VOLCANIC FLUFF SURFING: Keep the polyester stuffing safe from falling pumice rocks!",
+      "win": "UNSCORCHED PROFESSOR: Teddy navigated the fiery caldera with pristine fur!",
+      "lose": "STUFFING LEAK: A molten pebble singed the bow tie! Evacuate immediately!"
+    },
+    "summary": "DIPLOMATIC TRIUMPH: Professor Fluffington pacified ghosts, charmed alien invaders and survived volcanic fury."
+  },
+  "round_modifiers": {
+    "round1_wreck": {
+      "launch_impulse": 2.4,
+      "time_limit": 9.5,
+      "wreck_scale": 1.20,
+      "theme_title": "PLUSH HAUNTED CRASH",
+      "theme_accent": "#b5179e"
+    },
+    "round2_beam": {
+      "ufo_speed_mult": 0.82,
+      "beam_window_px": 72,
+      "target_catches": 2,
+      "time_limit": 11.0,
+      "theme_title": "COZY MOTHERSHIP BEAM",
+      "theme_accent": "#7209b7",
+      "decoys": ["PILLOW?", "DIRTY SOCK"]
+    },
+    "round3_lava": {
+      "rock_speed_min": 210,
+      "rock_speed_max": 290,
+      "spawn_interval": 0.82,
+      "hearts": 3,
+      "time_limit": 10.0,
+      "theme_title": "CALDERA TEA PARTY",
+      "theme_accent": "#f72585"
+    }
+  }
+}
