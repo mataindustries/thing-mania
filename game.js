@@ -1,6 +1,7 @@
-/* THING//MANIA v0.2 — written from scratch during Meta Hackathon, 2026-10-27.
- * No external runtime dependencies, models, existing project code or remote requests.
- * AI scene understanding and SAM segmentation are NOT implemented in this version.
+/* THING//MANIA v0.3 — Meta Global AI Developer Hackathon.
+ * Fresh hackathon code with Meta Muse Spark 1.3 GamePlan integration.
+ * All three microgames (WRECK IT, BEAM IT, RUN FOR IT) preserved.
+ * Runs with local mock adapter, zero API spending, and 100% offline fallback.
  */
 (() => {
   'use strict';
@@ -15,20 +16,49 @@
   const sub = document.querySelector('#ticketSub');
   const status = document.querySelector('#status');
   const photoNote = document.querySelector('#photoNote');
+  const roleBadge = document.querySelector('#roleBadge');
+  const userConsent = document.querySelector('#userConsent');
+  const analyzeBtn = document.querySelector('#analyzePhotoBtn');
+  const budgetStatus = document.querySelector('#budgetStatus');
+  const chipButtons = document.querySelectorAll('.chip-btn');
   const WIDTH = 420, HEIGHT = 640;
+
+  // Active GamePlan (default baseline, validated by GamePlan schema)
+  let activePlan = (typeof window !== 'undefined' && window.GamePlan)
+    ? window.GamePlan.createDefaultGamePlan({ label: 'MYSTERY THING' })
+    : {
+        schema_version: '1.3.0',
+        selected_object: { label: 'MYSTERY THING', role: 'Chaotic Arcade Prop' },
+        whimsical_role: 'Unsuspecting Everyday Wonder',
+        announcer_lines: {
+          intro: 'One everyday object. Three ridiculous universes. Zero sense.',
+          round1: { intro: 'Your thing is now a wrecking ball. Pull it left, release, and demolish the haunted house.', win: 'Property value reduced to zero. Ghosts now legally homeless.', lose: 'The haunted house survives. Its mortgage does not.' },
+          round2: { intro: 'The UFO is hungry. Wait until your thing passes directly under its beam, then tap to abduct it twice.', win: 'The aliens have adopted your thing. Nobody asked you.', lose: 'The UFO went home hungry and filed a complaint.' },
+          round3: { intro: 'Your thing is on vacation in a volcano. Drag left or right to dodge falling lava rocks. Survive the timer.', win: 'You escaped the volcano. Your insurance has not.', lose: 'Your thing has become locally sourced magma.' },
+          summary: 'Worlds survived. Points of questionable achievement registered. Your thing deserves a vacation.'
+        },
+        round_modifiers: {
+          round1_wreck: { launch_impulse: 2.6, time_limit: 9.0, wreck_scale: 1.0, theme_title: 'THE HAUNTED HOUSE', theme_accent: '#ff6f98' },
+          round2_beam: { ufo_speed_mult: 1.0, beam_window_px: 68, target_catches: 2, time_limit: 10.0, theme_title: 'THE UFO INCIDENT', theme_accent: '#7ff2d4', decoys: ['COW?', 'NOT IT'] },
+          round3_lava: { rock_speed_min: 245, rock_speed_max: 315, spawn_interval: 0.73, hearts: 2, time_limit: 10.0, theme_title: 'VOLCANO VACATION', theme_accent: '#ffcd63' }
+        }
+      };
+
   const stages = [
     {name: 'WRECK IT!', theme: 'THE HAUNTED HOUSE', hint:'DRAG BACK. LET FLY.', seconds: 9, color:'#ff6f98'},
     {name: 'BEAM IT!', theme: 'THE UFO INCIDENT', hint:'TAP WHEN THE THING IS UNDER THE UFO.', seconds: 10, color:'#7ff2d4'},
     {name: 'RUN FOR IT!', theme: 'VOLCANO VACATION', hint:'SLIDE LEFT/RIGHT. DODGE HOT ROCKS.', seconds: 10, color:'#ffcd63'}
   ];
+
   const state = {
     scene:'menu', round:0, remaining:9, elapsed:0, score:0, won:[null,null,null], seed:7821,
     particles:[], texts:[], shake:0, flash:0, freeze:0, playTime:0, last:0,
-    photo:null, photoLabel:'MYSTERY THING', dragging:false, pointer:null,
+    photo:null, photoLabel:'MYSTERY THING', photoBase64:null, dragging:false, pointer:null,
     wreck:{angle:-0.85,omega:0,launched:false,hit:false,damage:0},
     ufo:{hits:0,misses:0,beam:0,beamGood:false,phase:0,abduct:0,winCountdown:0},
     lava:{x:210,targetX:210,rocks:[],spawn:0,hearts:2,invuln:0,dodge:0}
   };
+
   let audio = null;
   const TAU=Math.PI*2;
   const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
@@ -36,11 +66,39 @@
   const random=()=>{state.seed=(Math.imul(1664525,state.seed)+1013904223)>>>0;return state.seed/4294967296;};
   const rnd=(a,b)=>a+random()*(b-a);
   const pt=(x,y)=>({x,y});
+
+  function applyPlanToStages(plan) {
+    if (!plan || !plan.round_modifiers) return;
+    activePlan = plan;
+    const m = plan.round_modifiers;
+    stages[0].theme = m.round1_wreck.theme_title || 'THE HAUNTED HOUSE';
+    stages[0].color = m.round1_wreck.theme_accent || '#ff6f98';
+    stages[0].seconds = m.round1_wreck.time_limit || 9.0;
+
+    stages[1].theme = m.round2_beam.theme_title || 'THE UFO INCIDENT';
+    stages[1].color = m.round2_beam.theme_accent || '#7ff2d4';
+    stages[1].seconds = m.round2_beam.time_limit || 10.0;
+
+    stages[2].theme = m.round3_lava.theme_title || 'VOLCANO VACATION';
+    stages[2].color = m.round3_lava.theme_accent || '#ffcd63';
+    stages[2].seconds = m.round3_lava.time_limit || 10.0;
+
+    if (roleBadge) {
+      const objLabel = plan.selected_object?.label || state.photoLabel;
+      const roleStr = plan.whimsical_role || plan.selected_object?.role || 'CHAOTIC PROP';
+      roleBadge.textContent = `PROP: ${objLabel.toUpperCase()} · ROLE: ${roleStr.toUpperCase()}`;
+    }
+
+    if (state.scene === 'menu') setModal('menu');
+  }
+
   const resetPhysics=()=>{
     state.wreck={angle:-0.85,omega:0,launched:false,hit:false,damage:0};
     state.ufo={hits:0,misses:0,beam:0,beamGood:false,phase:0,abduct:0,winCountdown:0};
-    state.lava={x:210,targetX:210,rocks:[],spawn:0,hearts:2,invuln:0,dodge:0};
+    const initHearts = activePlan.round_modifiers?.round3_lava?.hearts || 2;
+    state.lava={x:210,targetX:210,rocks:[],spawn:0,hearts:initHearts,invuln:0,dodge:0};
   };
+
   function tone(hz=220,duration=.1,type='square',volume=.06,slide=1){
     try{
       audio ||= new (window.AudioContext||window.webkitAudioContext)();
@@ -51,6 +109,7 @@
       o.connect(g);g.connect(audio.destination);o.start(now);o.stop(now+duration+.015);
     }catch(e){ /* sound must never block gameplay */ }
   }
+
   function noise(duration=.12,volume=.13){
     try{
       audio ||= new (window.AudioContext||window.webkitAudioContext)();
@@ -59,64 +118,74 @@
       const source=audio.createBufferSource(),g=audio.createGain();source.buffer=buf;g.gain.setValueAtTime(volume,now);g.gain.exponentialRampToValueAtTime(.001,now+duration);source.connect(g);g.connect(audio.destination);source.start(now);
     }catch(e){}
   }
+
   function burst(x,y,color,count=18,power=150){
     for(let i=0;i<count;i++){
       const a=random()*TAU,s=rnd(power*.35,power),life=rnd(.35,.95);
       state.particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-rnd(10,50),r:rnd(2,7),color,life,max:life,angle:random()*TAU,spin:rnd(-8,8)});
     }
   }
+
   function shout(str,x,y,color='#fff',size=29){state.texts.push({str,x,y,color,size,life:.9,max:.9,vx:rnd(-12,12)});}
   function setStatus(text){status.textContent=text;}
+
   function setModal(kind){
     modal.hidden=false;badges.hidden=true;
+    const lines = activePlan.announcer_lines;
     if(kind==='menu'){
       stamp.textContent='✹ OFFICIAL NONSENSE MACHINE ✹';
       title.innerHTML='YOUR STUFF.<br><em>OUR PROBLEM.</em>';
-      body.textContent='Three different universes. Three absurd microgames. One object gets absolutely no peace.';
+      body.textContent=lines?.intro || 'Three different universes. Three absurd microgames. One object gets absolutely no peace.';
       badges.hidden=false; primary.innerHTML='START THE NONSENSE <span>➜</span>';
       sub.textContent='ONE PHOTO · THREE GAMES · ALL CHAOS';
     }else if(kind==='round'){
       const s=stages[state.round];
       stamp.textContent=`ROUND 0${state.round+1} / 03  ·  ${s.theme}`;
+      const rKey = `round${state.round+1}`;
       title.innerHTML=state.round===0?'WRECK<br><em>THE HOUSE!</em>':state.round===1?'ALIENS<br><em>WANT YOUR STUFF!</em>':'THE FLOOR<br><em>IS LAVA!</em>';
-      body.textContent=state.round===0?'Your thing is now a wrecking ball. Pull it left, release, and demolish the haunted house.':state.round===1?'The UFO is hungry. Wait until your thing passes directly under its beam, then tap to abduct it twice.':'Your thing is on vacation in a volcano. Drag left or right to dodge falling lava rocks. Survive the timer.';
+      body.textContent=lines?.[rKey]?.intro || (state.round===0?'Your thing is now a wrecking ball. Pull it left, release, and demolish the haunted house.':state.round===1?'The UFO is hungry. Wait until your thing passes directly under its beam, then tap to abduct it twice.':'Your thing is on vacation in a volcano. Drag left or right to dodge falling lava rocks. Survive the timer.');
       primary.innerHTML='I WAS BORN READY <span>➜</span>';
       sub.textContent=s.hint;
     }else if(kind==='result'){
       const success=state.won[state.round];
+      const rKey = `round${state.round+1}`;
       stamp.textContent=success?'★ UNNECESSARILY IMPRESSIVE ★':'✕ COSMICALLY EMBARRASSING ✕';
       title.innerHTML=success?'YOU DID<br><em>THE THING!</em>':'ABSOLUTE<br><em>DISASTER.</em>';
-      body.textContent=state.round===0?(success?'Property value reduced to zero. Ghosts now legally homeless.':'The haunted house survives. Its mortgage does not.'):
+      const customResult = lines?.[rKey]?.[success ? 'win' : 'lose'];
+      body.textContent=customResult || (state.round===0?(success?'Property value reduced to zero. Ghosts now legally homeless.':'The haunted house survives. Its mortgage does not.'):
         state.round===1?(success?'The aliens have adopted your thing. Nobody asked you.':'The UFO went home hungry and filed a complaint.'):
-        (success?'You escaped the volcano. Your insurance has not.':'Your thing has become locally sourced magma.');
+        (success?'You escaped the volcano. Your insurance has not.':'Your thing has become locally sourced magma.'));
       primary.innerHTML=state.round===2?'SEE THE DAMAGE <span>➜</span>':'NEXT BAD IDEA <span>➜</span>';
       sub.textContent=`TOTAL SCORE: ${state.score.toString().padStart(4,'0')}`;
     }else if(kind==='summary'){
       stamp.textContent='✹ ARCADE INCIDENT REPORT ✹';
       const won=state.won.filter(Boolean).length;
       title.innerHTML=won===3?'CERTIFIED<br><em>MENACE.</em>':won===0?'YOU TRIED.<br><em>BARELY.</em>':'CHAOS<br><em>COMPLETE.</em>';
-      body.textContent=`${won}/3 worlds conquered. ${state.score} points of extremely questionable achievement. Your thing deserves a vacation.`;
+      body.textContent=lines?.summary || `${won}/3 worlds conquered. ${state.score} points of extremely questionable achievement. Your thing deserves a vacation.`;
       badges.hidden=false;
       badges.innerHTML=state.won.map((v,i)=>`<span>${v?'✓':'✕'} ${['WRECK','BEAM','LAVA'][i]}</span>`).join('');
       primary.innerHTML='ANOTHER DISASTER? <span>↻</span>';
       sub.textContent='PASS THE PHONE · CHALLENGE A FRIEND';
     }
   }
+
   function beginSession(){
     state.round=0;state.score=0;state.won=[null,null,null];
     const urlSeed=new URLSearchParams(location.search).get('seed');
     state.seed=urlSeed!==null?((Number(urlSeed)>>>0)||7821):((Math.random()*0xffffffff)>>>0);
     state.particles=[];state.texts=[];state.shake=0;resetPhysics();
-    state.scene='between';setModal('round');setStatus('ROUND 1 READY / ZERO API REQUESTS');
+    state.scene='between';setModal('round');setStatus(`ROUND 1 READY / ${activePlan.selected_object?.label?.toUpperCase() || 'MOCK READY'}`);
   }
+
   function startRound(){
     resetPhysics();state.particles=[];state.texts=[];state.remaining=stages[state.round].seconds;
     state.elapsed=0;state.scene='playing';state.shake=0;state.flash=0;state.dragging=false;
     modal.hidden=true;setStatus(`ROUND ${state.round+1} / ${stages[state.round].name} / LIVE`);
     tone(500,.09,'square',.06,1.3);setTimeoutSafeSound();
   }
-  // No timers: sounds stay synchronised to direct interactions or render frames.
+
   function setTimeoutSafeSound(){tone(740,.06,'triangle',.03,.8);}
+
   function endRound(win){
     if(state.scene!=='playing')return;
     state.won[state.round]=Boolean(win);state.scene='result';state.dragging=false;
@@ -124,6 +193,7 @@
     setModal('result');setStatus(`ROUND ${state.round+1} ${win?'CLEARED':'FAILED'} · ${state.score} POINTS`);
     if(win){tone(540,.18,'triangle',.075,1.9);burst(210,260,'#fdf071',28,215);}else tone(170,.45,'sawtooth',.045,.40);
   }
+
   primary.addEventListener('click',()=>{
     try{audio ||= new (window.AudioContext||window.webkitAudioContext)();audio.resume();}catch(e){}
     if(state.scene==='menu'||state.scene==='summary'){beginSession();return;}
@@ -133,15 +203,143 @@
       else{state.round++;state.scene='between';setModal('round');setStatus(`ROUND ${state.round+1} READY`);}
     }
   });
-  document.querySelector('#demo').addEventListener('click',()=>{state.scene='menu';state.round=0;state.score=0;state.won=[null,null,null];resetPhysics();setModal('menu');setStatus('READY / NO AI REQUESTS');});
+
+  document.querySelector('#demo').addEventListener('click',()=>{
+    state.scene='menu';state.round=0;state.score=0;state.won=[null,null,null];
+    resetPhysics();setModal('menu');setStatus('READY / NO AI REQUESTS');
+  });
+
   document.querySelector('#photo').addEventListener('change',e=>{
     const file=e.target.files?.[0];if(!file)return;
     if(file.size>12*1024*1024){photoNote.textContent='PHOTO TOO LARGE (MAX 12 MB)';return;}
     if(!file.type.startsWith('image/')){photoNote.textContent='PLEASE CHOOSE AN IMAGE';return;}
+    const reader = new FileReader();
+    reader.onload = () => {
+      state.photoBase64 = reader.result;
+      if (analyzeBtn) analyzeBtn.disabled = false;
+    };
+    reader.readAsDataURL(file);
+
     const url=URL.createObjectURL(file);const image=new Image();
-    image.onload=()=>{state.photo=image;state.photoLabel=file.name.replace(/\.[^.]+$/,'').slice(0,23)||'MY THING';photoNote.textContent=`USING: ${state.photoLabel.toUpperCase()} · CENTER CROP (NO AI YET)`;URL.revokeObjectURL(url);};
+    image.onload=()=>{
+      state.photo=image;
+      state.photoLabel=file.name.replace(/\.[^.]+$/,'').slice(0,23)||'MY THING';
+      photoNote.textContent=`USING: ${state.photoLabel.toUpperCase()} · PHOTO READY FOR META ANALYSIS`;
+      if (roleBadge) roleBadge.textContent = `PROP: ${state.photoLabel.toUpperCase()} · AWAITING DIRECTOR ANALYSIS`;
+      URL.revokeObjectURL(url);
+    };
     image.onerror=()=>{photoNote.textContent='IMAGE COULD NOT BE READ';URL.revokeObjectURL(url);};image.src=url;
   });
+
+  if (analyzeBtn) {
+    analyzeBtn.addEventListener('click', async () => {
+      if (!userConsent.checked) {
+        alert('User consent is required before transmitting or processing photo data.');
+        return;
+      }
+      if (!state.photoBase64) return;
+      analyzeBtn.disabled = true;
+      setStatus('DIRECTOR: ANALYZING PHOTO WITH META MUSE SPARK (MOCK)...');
+      try {
+        const resp = await fetch('/api/director/plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            imageBase64: state.photoBase64,
+            userConsent: true,
+            clientSeed: state.seed
+          })
+        });
+        const data = await resp.json();
+        if (data.plan) {
+          applyPlanToStages(data.plan);
+          setStatus(`DIRECTOR: ${data.plan.selected_object.label.toUpperCase()} LOADED (${data.cached ? 'CACHED' : 'ANALYZED'})`);
+          fetchBudgetStatus();
+        } else {
+          activateFallback(data.fallback_plan || null);
+        }
+      } catch (err) {
+        console.warn('Backend unavailable, falling back to local offline GamePlan:', err);
+        activateFallback();
+      } finally {
+        analyzeBtn.disabled = false;
+      }
+    });
+  }
+
+  // Handle Fixture Buttons
+  chipButtons.forEach(btn => {
+    btn.addEventListener('click', async () => {
+      chipButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const fixtureId = btn.getAttribute('data-fixture');
+
+      if (fixtureId === 'default') {
+        const def = (typeof window !== 'undefined' && window.GamePlan)
+          ? window.GamePlan.createDefaultGamePlan({ label: state.photoLabel || 'MYSTERY THING' })
+          : activePlan;
+        applyPlanToStages(def);
+        setStatus('DIRECTOR: DEFAULT PLAN RESTORED');
+        return;
+      }
+
+      setStatus(`DIRECTOR: LOADING FIXTURE [${fixtureId.toUpperCase()}]...`);
+      try {
+        const resp = await fetch('/api/director/plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fixtureId: fixtureId,
+            userConsent: true,
+            clientSeed: state.seed
+          })
+        });
+        const data = await resp.json();
+        if (data.plan) {
+          applyPlanToStages(data.plan);
+          setStatus(`DIRECTOR: FIXTURE [${data.plan.selected_object.label.toUpperCase()}] ${data.cached ? '(CACHED)' : '(MOCK LOADED)'}`);
+          fetchBudgetStatus();
+        } else {
+          activateFallback(data.fallback_plan || null);
+        }
+      } catch (err) {
+        console.warn('Backend fetch failed, attempting direct fixture fallback:', err);
+        // Direct offline fallback for static / file:// execution
+        try {
+          const directResp = await fetch(`fixtures/${fixtureId}.json`);
+          const fixtureJson = await directResp.json();
+          const valid = window.GamePlan?.validateGamePlan(fixtureJson);
+          if (valid?.valid) {
+            applyPlanToStages(valid.sanitized);
+            setStatus(`DIRECTOR: FIXTURE [${valid.sanitized.selected_object.label.toUpperCase()}] (OFFLINE)`);
+            return;
+          }
+        } catch (_) {}
+        activateFallback();
+      }
+    });
+  });
+
+  async function fetchBudgetStatus() {
+    try {
+      const resp = await fetch('/api/status');
+      const data = await resp.json();
+      if (data?.adapter && budgetStatus) {
+        budgetStatus.textContent = `SESSION SPEND: $${data.adapter.budget_used_usd.toFixed(2)} / $${data.adapter.max_budget_usd.toFixed(2)} CEILING · CALLS: ${data.adapter.session_calls}/${data.adapter.max_session_calls} · CACHE HITS: ${data.adapter.cache_hits}`;
+      }
+    } catch (_) {
+      if (budgetStatus) budgetStatus.textContent = 'MODE: 100% OFFLINE BROWSER FALLBACK ACTIVE';
+    }
+  }
+
+  function activateFallback(customPlan) {
+    const fallbackPlan = customPlan || (window.GamePlan
+      ? window.GamePlan.createDefaultGamePlan({ label: state.photoLabel || 'OFFLINE THING', source: 'offline_client_recovery' })
+      : activePlan);
+    applyPlanToStages(fallbackPlan);
+    setStatus('DIRECTOR: OFFLINE FALLBACK ENGAGED / GAMEPLAY SAFE');
+  }
+
   const pos=e=>{const b=canvas.getBoundingClientRect();return {x:(e.clientX-b.left)*WIDTH/b.width,y:(e.clientY-b.top)*HEIGHT/b.height};};
   function onPress(e){
     if(state.scene!=='playing')return;
@@ -153,14 +351,18 @@
     else if(state.round===2){state.dragging=true;state.lava.targetX=clamp(p.x,58,362);}
   }
   function setWreckAngle(p){
-    // Intentionally forgiving: anywhere on the playfield may pull the weight back.
     let a=Math.atan2(p.x-210,p.y-110);
     state.wreck.angle=clamp(a,-1.23,-.25);
   }
   function onMove(e){if(!state.dragging||state.scene!=='playing')return;e.preventDefault();const p=pos(e);state.pointer=p;if(state.round===0&&!state.wreck.launched)setWreckAngle(p);else if(state.round===2)state.lava.targetX=clamp(p.x,58,362);}
   function onRelease(e){
     if(state.scene!=='playing')return;
-    if(state.round===0&&state.dragging&&!state.wreck.launched){state.wreck.launched=true;state.wreck.omega=2.6;state.dragging=false;tone(135,.29,'sawtooth',.042,2.2);}
+    if(state.round===0&&state.dragging&&!state.wreck.launched){
+      state.wreck.launched=true;
+      const impulse = activePlan.round_modifiers?.round1_wreck?.launch_impulse || 2.6;
+      state.wreck.omega=impulse;
+      state.dragging=false;tone(135,.29,'sawtooth',.042,2.2);
+    }
     else state.dragging=false;
   }
   canvas.addEventListener('pointerdown',onPress);canvas.addEventListener('pointermove',onMove);
@@ -168,17 +370,29 @@
   window.addEventListener('keydown',e=>{
     if(state.scene!=='playing')return;
     if(e.key===' '||e.key==='Enter'){
-      e.preventDefault();if(state.round===1)tryBeam();else if(state.round===0&&!state.wreck.launched){state.wreck.launched=true;state.wreck.omega=2.6;}
+      e.preventDefault();
+      if(state.round===1)tryBeam();
+      else if(state.round===0&&!state.wreck.launched){
+        state.wreck.launched=true;
+        const impulse = activePlan.round_modifiers?.round1_wreck?.launch_impulse || 2.6;
+        state.wreck.omega=impulse;
+      }
     }
-    if(state.round===2){if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a'){state.lava.targetX=clamp(state.lava.targetX-96,58,362);e.preventDefault();}if(e.key==='ArrowRight'||e.key.toLowerCase()==='d'){state.lava.targetX=clamp(state.lava.targetX+96,58,362);e.preventDefault();}}
+    if(state.round===2){
+      if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a'){state.lava.targetX=clamp(state.lava.targetX-96,58,362);e.preventDefault();}
+      if(e.key==='ArrowRight'||e.key.toLowerCase()==='d'){state.lava.targetX=clamp(state.lava.targetX+96,58,362);e.preventDefault();}
+    }
   });
   const targetX=()=>210+136*Math.sin(state.ufo.phase);
   function tryBeam(){
     const u=state.ufo;if(u.beam>0||u.winCountdown>0)return;
-    u.beam=.43;u.beamGood=Math.abs(targetX()-210)<68;
+    u.beam=.43;
+    const windowPx = activePlan.round_modifiers?.round2_beam?.beam_window_px || 68;
+    const requiredHits = activePlan.round_modifiers?.round2_beam?.target_catches || 2;
+    u.beamGood=Math.abs(targetX()-210)<windowPx;
     if(u.beamGood){u.hits++;u.abduct=.38;state.score+=110;state.shake=5;state.flash=.13;shout('SNATCHED!',205,290,'#fff79b',30);burst(210,430,'#8dffe1',26,190);tone(480,.28,'triangle',.09,2.0);}
     else{u.misses++;state.shake=3;shout('NOPE!',210,290,'#ff8bb2',35);tone(180,.2,'sawtooth',.055,.55);}
-    if(u.hits>=2)u.winCountdown=.72;
+    if(u.hits>=requiredHits)u.winCountdown=.72;
   }
   function update(dt){
     state.playTime+=dt;
@@ -199,16 +413,20 @@
       }
       if(w.hit){w.damage=Math.min(1,w.damage+dt*1.12);if(w.damage>=1&&state.scene==='playing')endRound(true);}
     }else if(state.round===1){
-      state.ufo.phase+=dt*1.93;
+      const speedMult = activePlan.round_modifiers?.round2_beam?.ufo_speed_mult || 1.0;
+      state.ufo.phase+=dt*1.93*speedMult;
       state.ufo.beam=Math.max(0,state.ufo.beam-dt);
       state.ufo.abduct=Math.max(0,state.ufo.abduct-dt);
       if(state.ufo.winCountdown>0){state.ufo.winCountdown=Math.max(0,state.ufo.winCountdown-dt);if(state.ufo.winCountdown===0)endRound(true);}
     }else{
       const l=state.lava;l.x=lerp(l.x,l.targetX,Math.min(1,dt*13));l.spawn+=dt;
       l.invuln=Math.max(0,l.invuln-dt);
-      if(l.spawn>.73){l.spawn=0;
+      const spawnInterval = activePlan.round_modifiers?.round3_lava?.spawn_interval || 0.73;
+      const minSpd = activePlan.round_modifiers?.round3_lava?.rock_speed_min || 245;
+      const maxSpd = activePlan.round_modifiers?.round3_lava?.rock_speed_max || 315;
+      if(l.spawn>spawnInterval){l.spawn=0;
         const lane=Math.floor(random()*3),xx=[92,210,328][lane];
-        l.rocks.push({x:xx,y:-40,r:rnd(23,34),spin:rnd(-4,4),a:rnd(0,TAU),speed:rnd(245,315)});
+        l.rocks.push({x:xx,y:-40,r:rnd(23,34),spin:rnd(-4,4),a:rnd(0,TAU),speed:rnd(minSpd,maxSpd)});
       }
       for(const rock of l.rocks){rock.y+=rock.speed*dt;rock.a+=rock.spin*dt;
         if(rock.y>490&&rock.y<554&&Math.abs(rock.x-l.x)<rock.r+27&&l.invuln<=0){
@@ -234,7 +452,6 @@
     c.save();c.translate(x,y);c.rotate(rot);
     if(glow)c.shadowColor='#fff08a',c.shadowBlur=21;
     c.fillStyle='rgba(0,0,0,.28)';c.beginPath();c.ellipse(5,8,size*.55,size*.55,0,0,TAU);c.fill();
-    // Intentional wonky cutout shape, consistent across all three different games.
     path([[-size*.53,-size*.47],[size*.43,-size*.54],[size*.56,-size*.38],[size*.51,size*.46],[-size*.45,size*.55],[-size*.57,size*.35]],'#fff5cb','#181327',5);
     const v=size*.48;
     c.save();c.beginPath();c.roundRect(-v,-v,v*2,v*2,7);c.clip();
@@ -267,12 +484,9 @@
   }
   function spookyHouse(){
     const progress=state.wreck.damage;
-    const dx=progress*26;
     c.save();c.translate(progress*9,progress*29);c.rotate(progress*.12);
-    // Ground and cartoon gravestones.
     path([[0,490],[70,479],[146,499],[232,482],[420,499],[420,640],[0,640]],'#2c3852',null);
     for(const p of [[53,481],[133,495],[400,487]]){rect(p[0]-8,p[1]-23,23,31,'#9e9ab0','#272138',2,12);txt('RIP',p[0]+4,p[1]-9,7,'#353049','center',null);}
-    // House breaks into independent panels on collision.
     const panels=[{x:257,y:296,w:119,h:147,a:-progress*.22,off:-progress*16},{x:247,y:262,w:145,h:40,a:progress*.32,off:-progress*26}];
     for(const p of panels){c.save();c.translate(p.x+p.w/2,p.y+p.h/2+p.off);c.rotate(p.a);rect(-p.w/2,-p.h/2,p.w,p.h,p.y<280?'#623858':'#362c52','#101023',5,4);c.restore();}
     c.save();c.translate(316-progress*30,284-progress*22);c.rotate(progress*.27);
@@ -280,12 +494,10 @@
     path([[-60,-10],[-60,-54],[-35,-54],[-35,-28]],'#8a4561','#201529',4);
     path([[40,-30],[40,-61],[69,-61],[69,-4]],'#8a4561','#201529',4);
     c.restore();
-    // Windows and mouth-like door.
     for(const x of [272,339]){rect(x-progress*15,321-progress*25,22,37,'#fff076','#19152c',4,3);path([[x+11-progress*15,321-progress*25],[x+11-progress*15,356-progress*25]],'#19152c',null);}
     rect(295-progress*19,380-progress*25,40,63,'#e46a85','#181329',5,18);
     txt('NO REFUNDS',309,472-progress*9,10,'#f8cf85','center');
     c.restore();
-    // Ghosts erupt visibly from destroyed building.
     if(state.wreck.hit){
       const p=clamp(progress,0,1);
       for(let i=0;i<5;i++){const gx=310+Math.sin(i*2.7)*92*p,gy=313-135*p+Math.cos(i*4)*61*p;
@@ -301,7 +513,6 @@
   }
   function drawWreck(){
     drawBackground('#292049','#754057','#d3a5e1');
-    // Moon and occasional tiny bats.
     circ(334,174,48,'#f5e0a1',null);circ(343,160,42,'#292049',null);
     for(const x of [49,106,223]){c.save();c.translate(x,198+Math.sin(state.playTime*2+x)*8);txt('⌁',0,0,33,'#17152c');c.restore();}
     spookyHouse();
@@ -310,8 +521,10 @@
     c.strokeStyle='#ded2cf';c.lineWidth=6;c.beginPath();c.moveTo(pivot.x,pivot.y);c.lineTo(bx,by);c.stroke();
     for(let t=0;t<1;t+=.15){const x=lerp(pivot.x,bx,t),y=lerp(pivot.y,by,t);circ(x,y,2.8,'#5a5878',null);}
     circ(pivot.x,pivot.y,12,'#f5c369','#171326',4);
-    if(!w.hit)drawThing(bx,by,89,w.angle*.3,true);
-    else drawThing(345,320,89,.6,true);
+    const wreckScale = activePlan.round_modifiers?.round1_wreck?.wreck_scale || 1.0;
+    const thingSize = 89 * wreckScale;
+    if(!w.hit)drawThing(bx,by,thingSize,w.angle*.3,true);
+    else drawThing(345,320,thingSize,.6,true);
     if(!w.launched&&!w.hit){
       c.save();c.setLineDash([6,8]);c.beginPath();c.arc(210,139,190,Math.PI*.18,Math.PI*.82);c.strokeStyle='#ffef9b';c.lineWidth=2;c.stroke();c.restore();
       txt(state.dragging?'RELEASE!':'PULL LEFT, THEN LET GO!',210,541,20,'#fff0ab');
@@ -331,10 +544,8 @@
     for(let i=0;i<27;i++){const x=(i*83+35)%420,y=(i*47+163)%420;star(x,y,i%2?4:5,3+i%3,'#faf1ba');}
     circ(64,193,28,'#d36dc4',null);circ(58,183,8,'#8c57b6',null);circ(70,200,7,'#8c57b6',null);
     path([[0,495],[60,473],[110,492],[176,480],[250,493],[310,475],[420,498],[420,640],[0,640]],'#554466',null);
-    // Highway for abductable, moving objects. UFO stays aligned with center strip.
     rect(0,505,420,113,'#242941',null,0);for(let x=15;x<420;x+=72)rect(x,552,33,6,'#fcce72',null,0,3);
     const u=state.ufo;const tx=targetX();
-    // Tractor beam lasts 0.43 s; green when aligned, red on miss.
     if(u.beam>0){
       c.save();c.globalAlpha=.38+u.beam*.65;
       path([[201,230],[219,230],[295,506],[122,506]],u.beamGood?'#78ffcf':'#ff6993',null);c.restore();
@@ -344,20 +555,20 @@
       path([[165,487],[210,502],[255,487]],'#69fce0',null);
     }
     saucer(210,204,1);
-    // Passing decoys: old-fashioned cartoon junk, not related to ghosts.
     const dy=448;
-    const decoys=[{x:210+151*Math.sin(u.phase+2.04),col:'#ffa5c6',t:'COW?'},{x:210+151*Math.sin(u.phase+4.1),col:'#ffe483',t:'NOT IT'}];
+    const planDecoys = activePlan.round_modifiers?.round2_beam?.decoys || ['COW?', 'NOT IT'];
+    const decoys=[{x:210+151*Math.sin(u.phase+2.04),col:'#ffa5c6',t:planDecoys[0] || 'COW?'},{x:210+151*Math.sin(u.phase+4.1),col:'#ffe483',t:planDecoys[1] || 'NOT IT'}];
     for(const d of decoys){c.save();c.translate(d.x,dy+45);c.rotate(Math.sin(state.playTime*3+d.x)*.1);rect(-27,-21,54,42,d.col,'#171329',4,9);circ(-11,-4,5,'#171329',null);circ(13,-4,5,'#171329',null);txt(d.t,0,37,9,'#fff3bd');c.restore();}
     if(u.abduct<=0)drawThing(tx,dy+27,70,Math.sin(state.playTime*2)*.13,true);
     else{const lift=(.38-u.abduct)*310;drawThing(210,dy+27-lift,70-lift*.055,Math.sin(state.playTime*12)*.3,true);}
-    txt(`CAPTURED ${u.hits}/2`,210,140,25,'#a9ffe3');
+    const targetCatches = activePlan.round_modifiers?.round2_beam?.target_catches || 2;
+    txt(`CAPTURED ${u.hits}/${targetCatches}`,210,140,25,'#a9ffe3');
     txt(`MISFIRES ${u.misses}`,210,580,12,'#f7cbd6');
     txt('TAP ANYWHERE WHEN ALIGNED!',210,615,13,'#fff2b2');
   }
   function volcano(){
     drawBackground('#fa9664','#ff4a66','#fff2a5');
     circ(74,163,55,'#ffe6a3',null);circ(68,157,49,'#fff5ba',null);
-    // Cut-paper mountains and an erupting volcano with an expressive face.
     path([[0,408],[104,247],[223,419]],'#a25065','#251832',5);
     path([[192,395],[311,236],[420,399]],'#8a385e','#251832',5);
     path([[272,284],[310,235],[347,287],[336,294],[294,296]],'#ffd17f','#481b36',3);
@@ -365,7 +576,6 @@
     for(let i=0;i<15;i++){const px=(i*53+18)%420,py=260+(i*79)%265;
       circ(px,py+Math.sin(state.playTime*3+i)*9,3+i%4,i%2?'#ffd46d':'#e44168',null);
     }
-    // Lava river, always looks cheap and in motion.
     path([[0,524],[75,530],[150,513],[220,525],[315,505],[420,521],[420,640],[0,640]],'#ff802e','#68263d',6);
     for(let i=0;i<11;i++){const xx=(i*49+state.playTime*52)%480-20,yy=568+Math.sin(i*3+state.playTime*3)*25;path([[xx,yy],[xx+19,yy-8],[xx+35,yy],[xx+16,yy+11]],'#ffe46b',null);}
     txt('!!! ACTIVE VOLCANO !!!',210,442,18,'#fff3a5');
@@ -379,16 +589,15 @@
   function drawLava(){
     volcano();
     const l=state.lava;
-    // Three drifting lanes and arrows show where to steer.
     for(const x of [92,210,328]){c.save();c.setLineDash([5,14]);c.strokeStyle='rgba(255,244,186,.30)';c.lineWidth=2;c.beginPath();c.moveTo(x,149);c.lineTo(x,536);c.stroke();c.restore();}
     for(const r of l.rocks)rock(r);
     c.save();if(l.invuln>0&&Math.floor(state.playTime*12)%2===0)c.globalAlpha=.36;
-    // Object surfs on an aggressively low-budget hand-drawn raft.
     c.translate(l.x,0);
     path([[-55,544],[55,544],[39,559],[-45,559]],'#69eee0','#202238',4);
     drawThing(0,510,65,Math.sin(state.playTime*10)*.07,true);
     c.restore();
-    for(let i=0;i<2;i++)txt(i<l.hearts?'♥':'♡',355+i*25,138,25,i<l.hearts?'#fff3aa':'#ab5972');
+    const maxHearts = activePlan.round_modifiers?.round3_lava?.hearts || 2;
+    for(let i=0;i<maxHearts;i++)txt(i<l.hearts?'♥':'♡',330+i*25,138,25,i<l.hearts?'#fff3aa':'#ab5972');
     txt('SWIPE LEFT / RIGHT TO SURVIVE',210,612,14,'#fff3b8');
     txt('OH NO IT IS VERY HOT',210,585,12,'#fff4bd');
   }
@@ -396,7 +605,6 @@
     drawBackground('#24203e','#853954','#f1b972');
     for(let i=0;i<18;i++){const x=(i*83+23)%420,y=(i*47+82)%640;star(x,y,6,13+i%3*5,i%2?'#ff7c9d':'#fae78d');}
     c.save();c.translate(216,318);c.rotate(Math.sin(state.playTime*2)*.035);
-    // Framing all three games: phone-camera sticker aesthetic.
     rect(-129,-111,258,221,'#fff1c1','#191229',7,9);
     txt('YOUR THING GOES HERE',0,-84,14,'#292039','center',null);
     drawThing(0,0,138,Math.sin(state.playTime*2)*.16);
@@ -422,5 +630,6 @@
     const dt=state.last?Math.min(.042,(now-state.last)/1000):.016;state.last=now;
     update(dt);draw();requestAnimationFrame(frame);
   }
-  resetPhysics();setModal('menu');requestAnimationFrame(frame);
+  applyPlanToStages(activePlan);
+  resetPhysics();setModal('menu');fetchBudgetStatus();requestAnimationFrame(frame);
 })();
