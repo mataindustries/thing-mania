@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#181323">
+  <meta name="description" content="THING//MANIA: Your stuff. Our terrible ideas. Three chaotic mini-games in under thirty seconds.">
+  <title>THING//MANIA | Pocket Arcade</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="masthead">
+      <div class="brand">THING<span>//</span>MANIA <sup>v0.2</sup></div>
+      <div class="byline">THE WORLD IS YOUR ARCADE <span class="spark">✳</span></div>
+    </header>
+    <div class="arcade-shell">
+      <div class="arcade-hardware"><span>● REC</span><span>POCKET MAYHEM SYSTEM™</span><span>LIVE <i></i></span></div>
+      <div class="screen-wrap">
+        <canvas id="game" width="420" height="640" aria-label="THING MANIA: Three playable arcade microgames. Drag the wrecking ball, tap to beam up the object, and dodge lava." tabindex="0"></canvas>
+        <div id="modal" class="modal" aria-live="polite">
+          <div class="ticket">
+            <div id="ticketStamp" class="ticket-stamp">✹ INSERT CHAOS ✹</div>
+            <h1 id="ticketTitle">YOUR STUFF.<br><em>OUR PROBLEM.</em></h1>
+            <p id="ticketBody">One everyday object. Three ridiculous games. Zero sense.</p>
+            <div id="ticketBadges" class="badges"><span>01 WRECK</span><span>02 ABDUCT</span><span>03 ESCAPE</span></div>
+            <button type="button" id="primaryBtn" class="bigbutton">START THE NONSENSE <span>➜</span></button>
+            <p id="ticketSub" class="subnote">Phone-friendly · sound on after first tap</p>
+          </div>
+        </div>
+      </div>
+      <div class="under-screen"><span id="status" aria-live="polite">READY / NO AI REQUESTS</span><span class="led"></span></div>
+    </div>
+    <div class="below">
+      <label class="filebutton" for="photo">↥ USE MY THING<input id="photo" type="file" accept="image/*"></label>
+      <button type="button" class="secondary" id="demo">↻ RESET</button>
+    </div>
+    <div id="photoNote" class="photo-status" aria-live="polite">USING: DEFAULT MYSTERY OBJECT</div>
+    <p class="disclaimer"><b>Hackathon prototype · 100% new game code.</b> Photo mode displays a cropped photo sticker, not true object segmentation. Meta Muse/SAM integration is the next milestone; no API requests or costs are involved.</p>
+    <footer>DON'T PANIC / DO PANIC / PASS THE PHONE</footer>
+  </main>
+  <script src="game.js" defer></script>
+</body>
+</html>
