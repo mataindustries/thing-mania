@@ -15,6 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const { interpretScene, getAdapterStatus, resetSession } = require('./meta_adapter');
 const { createDefaultGamePlan } = require('./gameplan');
+const { segmentSticker, getSamStatus } = require('./sam_adapter');
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const HOST = process.env.HOST || '127.0.0.1';
@@ -142,7 +143,8 @@ function createServer() {
         const status = getAdapterStatus();
         return sendJson(res, 200, {
           status: 'online',
-          adapter: status
+          adapter: status,
+          sam: getSamStatus()
         });
       }
 
@@ -160,6 +162,36 @@ function createServer() {
         }
         resetSession();
         return sendJson(res, 200, { success: true, message: 'Mock session reset.' });
+      }
+
+      // 4. Optional SAM 3.1 cutout: requires a distinct affirmative click.
+      // Same origin, server-held credentials, bounded to one paid image request.
+      if (method === 'POST' && pathname === '/api/sticker/cutout') {
+        let payload;
+        try { payload = await readBody(req, 6 * 1024 * 1024); }
+        catch (_) { return sendJson(res, 400, { success: false, error: 'INVALID_IMAGE_PAYLOAD' }); }
+        if (payload.userConsent !== true) {
+          return sendJson(res, 403, { success: false, error: 'CONSENT_REQUIRED' });
+        }
+        if (process.env.MOCK_MODE !== 'false') {
+          return sendJson(res, 409, { success: false, error: 'SAM_REQUIRES_LIVE_MODE' });
+        }
+        try {
+          const result = await segmentSticker(payload);
+          return sendJson(res, 200, result);
+        } catch (e) {
+          // Do not echo upstream errors or private image details to the browser.
+          const code = String(e.message || '');
+          const allowed = new Set([
+            'CONSENT_REQUIRED', 'INVALID_IMAGE', 'INVALID_CONCEPT',
+            'NO_API_KEY', 'SAM_SESSION_LIMIT', 'SAM_INCOMPLETE',
+            'SAM_NO_MATCH', 'SAM_INVALID_MASK'
+          ]);
+          const safe = allowed.has(code) ? code : 'SAM_API_ERROR';
+          console.warn('[SAM] Cutout failed:', safe);
+          return sendJson(res, code === 'SAM_SESSION_LIMIT' ? 429 : 422,
+            { success: false, error: safe, sam: getSamStatus() });
+        }
       }
 
       // 4. Meta Scene Interpretation API
