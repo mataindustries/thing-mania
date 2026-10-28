@@ -330,6 +330,13 @@
         if (directorHeader) directorHeader.textContent = a.mock_mode
           ? '✹ META GAME DIRECTOR · MOCK MODE ✹'
           : '✹ META GAME DIRECTOR · LIVE META API ✹';
+        if (status.textContent.includes('CHECKING BACKEND')) {
+          setStatus(a.mock_mode ? 'DIRECTOR: READY / MOCK MODE' : 'DIRECTOR: READY / LIVE META API');
+        }
+        if (!a.mock_mode && a.session_calls >= a.max_session_calls && analyzeBtn) {
+          analyzeBtn.disabled = true;
+          analyzeBtn.textContent = 'SESSION API LIMIT REACHED — RESTART BACKEND TO RETRY';
+        }
         if (budgetStatus) budgetStatus.textContent = `EST. SESSION SPEND: ${a.budget_used_usd.toFixed(2)} / ${a.max_budget_usd.toFixed(2)} CEILING · API ATTEMPTS: ${a.session_calls}/${a.max_session_calls} · META RESPONSES: ${a.live_calls} · CACHE: ${a.cache_hits}`;
       }
     } catch (_) {
