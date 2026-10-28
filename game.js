@@ -130,6 +130,33 @@
     }
   }
 
+
+  // Distinct physical comedy for common objects. Muse names the prop;
+  // deterministic game code handles the fast, reliable visual payoff.
+  function propSignature() {
+    const label=String(activePlan.selected_object?.label || state.photoLabel).toLowerCase();
+    if (/pumpkin|gourd|squash/.test(label))
+      return { shape:'seed', color:'#ff9e35', secondary:'#ffe08b', word:'SQUASHED!' };
+    if (/sponge|soap|towel/.test(label))
+      return { shape:'splash', color:'#79eafb', secondary:'#e4ffff', word:'SOAKED!' };
+    if (/car|truck|wheel|metal/.test(label))
+      return { shape:'spark', color:'#ffd068', secondary:'#ffffff', word:'CRASH!' };
+    if (/bear|plush|stuffed|pillow/.test(label))
+      return { shape:'fluff', color:'#ffafd7', secondary:'#ffeff8', word:'FLUFF STORM!' };
+    return { shape:'spark', color:'#fdf071', secondary:'#fff1c0', word:'BONK!' };
+  }
+  function signatureBurst(x,y,count=24) {
+    const spec=propSignature();
+    for(let i=0;i<count;i++){
+      const a=random()*TAU,s=rnd(75,230),life=rnd(.55,1.2);
+      state.particles.push({
+        x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-rnd(20,70),
+        r:rnd(5,12),color:i%3?spec.color:spec.secondary,
+        life,max:life,angle:random()*TAU,spin:rnd(-10,10),shape:spec.shape
+      });
+    }
+    return spec;
+  }
   function shout(str,x,y,color='#fff',size=29){state.texts.push({str,x,y,color,size,life:.9,max:.9,vx:rnd(-12,12)});}
   function setStatus(text){status.textContent=text;}
 
@@ -565,7 +592,7 @@
     const windowPx = activePlan.round_modifiers?.round2_beam?.beam_window_px || 68;
     const requiredHits = activePlan.round_modifiers?.round2_beam?.target_catches || 2;
     u.beamGood=Math.abs(targetX()-210)<windowPx;
-    if(u.beamGood){u.hits++;u.abduct=.38;state.score+=110;state.shake=5;state.flash=.13;shout('SNATCHED!',205,290,'#fff79b',30);burst(210,430,'#8dffe1',26,190);tone(480,.28,'triangle',.09,2.0);}
+    if(u.beamGood){u.hits++;u.abduct=.38;state.score+=110;state.shake=5;state.flash=.13;shout('SNATCHED!',205,290,'#fff79b',30);burst(210,430,'#8dffe1',26,190);signatureBurst(210,430,14);tone(480,.28,'triangle',.09,2.0);}
     else{u.misses++;state.shake=3;shout('NOPE!',210,290,'#ff8bb2',35);tone(180,.2,'sawtooth',.055,.55);}
     if(u.hits>=requiredHits)u.winCountdown=.72;
   }
@@ -615,7 +642,9 @@
   }
   function wreckImpact(){
     const w=state.wreck;w.hit=true;w.omega=0;state.shake=19;state.flash=.24;state.score+=175;
-    burst(317,293,'#fcdb77',40,235);burst(306,262,'#e1b2ff',27,195);shout('KABLOOEY!',260,190,'#fff29b',33);
+    burst(317,293,'#fcdb77',40,235);
+    const signature=signatureBurst(306,262,34);
+    shout(signature.word,260,190,signature.secondary,31);
     tone(81,.39,'sawtooth',.11,.3);noise(.45,.21);
   }
   function path(points,color,stroke='#191426',width=3){c.beginPath();c.moveTo(...points[0]);for(let i=1;i<points.length;i++)c.lineTo(...points[i]);c.closePath();c.fillStyle=color;c.fill();if(stroke){c.strokeStyle=stroke;c.lineWidth=width;c.lineJoin='round';c.stroke();}}
@@ -807,7 +836,17 @@
       titleBanner(stages[state.round].name,stages[state.round].theme,stages[state.round].color);
       timerBar();
     }
-    for(const p of state.particles){c.save();c.globalAlpha=clamp(p.life/p.max,0,1);c.translate(p.x,p.y);c.rotate(p.angle);rect(-p.r/2,-p.r/2,p.r,p.r,p.color,null,0,1);c.restore();}
+    for(const p of state.particles){c.save();c.globalAlpha=clamp(p.life/p.max,0,1);c.translate(p.x,p.y);c.rotate(p.angle);
+      if(p.shape==='seed'){
+        c.beginPath();c.ellipse(0,0,p.r*.28,p.r*.63,.4,0,TAU);c.fillStyle=p.color;c.fill();
+      }else if(p.shape==='splash'){
+        c.beginPath();c.ellipse(0,0,p.r*.35,p.r*.7,0,0,TAU);c.fillStyle=p.color;c.fill();
+      }else if(p.shape==='spark'){
+        c.fillStyle=p.color;c.fillRect(-p.r*.15,-p.r*.8,p.r*.3,p.r*1.6);
+      }else if(p.shape==='fluff'){
+        circ(0,0,p.r*.6,p.color,null);
+      }else rect(-p.r/2,-p.r/2,p.r,p.r,p.color,null,0,1);
+      c.restore();}
     for(const t of state.texts){c.save();c.globalAlpha=clamp(t.life/t.max,0,1);c.translate(t.x,t.y);c.rotate(Math.sin(t.life*7)*.04);txt(t.str,0,0,t.size,t.color);c.restore();}
     if(state.flash>0){c.fillStyle=`rgba(255,240,177,${state.flash*.48})`;c.fillRect(0,0,420,640);}
     c.restore();
