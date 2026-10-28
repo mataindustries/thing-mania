@@ -7,7 +7,9 @@
 
 const crypto = require('node:crypto');
 const SAM_IMAGE_COST_USD = 0.0025; // Published USD price per image, estimate.
-const MAX_SAM_CALLS = Math.max(0, Number(process.env.MAX_SAM_CALLS ?? 1));
+const configuredLimit = Number.parseInt(process.env.MAX_SAM_CALLS ?? '1', 10);
+const MAX_SAM_CALLS = Number.isSafeInteger(configuredLimit)
+  ? Math.max(0, Math.min(5, configuredLimit)) : 1;
 const samCache = new Map();
 let attempts = 0;
 
