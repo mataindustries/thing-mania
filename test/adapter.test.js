@@ -181,16 +181,10 @@ describe('Meta Adapter — token cost accounting', () => {
 
     const s = getAdapterStatus();
     assert.equal(s.session_calls, 3);
-    // Each mock call uses estimated 340 prompt + 210 completion tokens.
-    // The adapter rounds each call's cost to 6dp before accumulating; compare
-    // with a tolerance large enough to absorb floating-point summation drift.
+    // Each mock call estimates 340 prompt + 210 completion tokens.
+    // The session accumulates full-precision costs; status rounds USD to 4dp.
     const perCall = estimateCost(340, 210);
-    const loBound = perCall * 3 - 1e-5;
-    const hiBound = perCall * 3 + 1e-5;
-    assert.ok(
-      s.budget_used_usd >= loBound && s.budget_used_usd <= hiBound,
-      `Budget ${s.budget_used_usd} must be ~${(perCall * 3).toFixed(6)} (±1e-5)`
-    );
+    assert.equal(s.budget_used_usd, Number((perCall * 3).toFixed(4)));
   });
 });
 
