@@ -24,3 +24,13 @@
 .cutout-status{display:block;font:700 10px/1.45 system-ui,Arial;color:#c7c0d4;padding:2px 0 3px}
 .cutout-status[data-state="ready"]{color:#83f2d2}
 .cutout-status[data-state="error"]{color:#ff9bac}
+
+/* Judge-friendly v0.4 first-run layout: make the photo the hero. */
+.app > .below{margin-top:12px}
+.app > .photo-status{padding:8px 4px 4px}
+.app > .director-box{margin:10px 0 18px}
+.fixture-details{margin:6px 0 9px}
+.fixture-details > summary{cursor:pointer;list-style:revert;color:#a6a0b9;
+ font:800 10px/1.4 monospace;letter-spacing:.04em;padding:3px 0}
+.fixture-details[open] .fixture-row{margin:8px 0 6px}
+.arcade-shell{scroll-margin-top:12px}
