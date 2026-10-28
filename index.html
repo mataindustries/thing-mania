@@ -11,7 +11,7 @@
 <body>
   <main class="app">
     <header class="masthead">
-      <div class="brand">THING<span>//</span>MANIA <sup>v0.3</sup></div>
+      <div class="brand">THING<span>//</span>MANIA <sup>v0.4</sup></div>
       <div class="byline">THE WORLD IS YOUR ARCADE <span class="spark">✳</span></div>
     </header>
     <div class="arcade-shell">
@@ -51,6 +51,8 @@
           <span>Consent: Send photo to local Meta Director adapter (MODEL_API_KEY server-side)</span>
         </label>
         <button type="button" id="analyzePhotoBtn" class="analyze-btn" disabled>⚡ ANALYZE PHOTO WITH META AI</button>
+        <button type="button" id="cutoutBtn" class="analyze-btn cutout-btn" disabled>✂ CUT OUT MY THING · SAM 3.1</button>
+        <small id="cutoutStatus" class="cutout-status" aria-live="polite">After Meta identifies your object, turn it into a sticker. One optional SAM request (~$0.0025).</small>
       </div>
       <div class="budget-status" id="budgetStatus">SESSION SPEND: $0.00 / $1.00 CEILING · CALLS: 0 / 10 · 100% OFFLINE CAPABLE</div>
     </div>
