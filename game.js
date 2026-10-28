@@ -239,7 +239,7 @@
       }
       if (!state.photoBase64) return;
       analyzeBtn.disabled = true;
-      setStatus('DIRECTOR: ANALYZING PHOTO WITH META MUSE SPARK (MOCK)...');
+      setStatus('DIRECTOR: ANALYZING PHOTO WITH META MUSE SPARK...');
       try {
         const resp = await fetch('/api/director/plan', {
           method: 'POST',
@@ -251,18 +251,18 @@
           })
         });
         const data = await resp.json();
-        if (data.plan) {
+        if (resp.ok && data.plan && !data.meta?.fallback_activated) {
           applyPlanToStages(data.plan);
-          setStatus(`DIRECTOR: ${data.plan.selected_object.label.toUpperCase()} LOADED (${data.cached ? 'CACHED' : 'ANALYZED'})`);
-          fetchBudgetStatus();
+          setStatus(`DIRECTOR: ${data.plan.selected_object.label.toUpperCase()} LOADED (${data.cached ? 'CACHED' : 'META ANALYZED'})`);
         } else {
-          activateFallback(data.fallback_plan || null);
+          activateFallback(data.fallback_plan || data.plan || null);
         }
       } catch (err) {
         console.warn('Backend unavailable, falling back to local offline GamePlan:', err);
         activateFallback();
       } finally {
         analyzeBtn.disabled = false;
+        fetchBudgetStatus();
       }
     });
   }
@@ -324,8 +324,13 @@
     try {
       const resp = await fetch('/api/status');
       const data = await resp.json();
-      if (data?.adapter && budgetStatus) {
-        budgetStatus.textContent = `SESSION SPEND: $${data.adapter.budget_used_usd.toFixed(2)} / $${data.adapter.max_budget_usd.toFixed(2)} CEILING · CALLS: ${data.adapter.session_calls}/${data.adapter.max_session_calls} · CACHE HITS: ${data.adapter.cache_hits}`;
+      if (data?.adapter) {
+        const a = data.adapter;
+        const directorHeader = document.querySelector('#directorHeader');
+        if (directorHeader) directorHeader.textContent = a.mock_mode
+          ? '✹ META GAME DIRECTOR · MOCK MODE ✹'
+          : '✹ META GAME DIRECTOR · LIVE META API ✹';
+        if (budgetStatus) budgetStatus.textContent = `EST. SESSION SPEND: ${a.budget_used_usd.toFixed(2)} / ${a.max_budget_usd.toFixed(2)} CEILING · API ATTEMPTS: ${a.session_calls}/${a.max_session_calls} · META RESPONSES: ${a.live_calls} · CACHE: ${a.cache_hits}`;
       }
     } catch (_) {
       if (budgetStatus) budgetStatus.textContent = 'MODE: 100% OFFLINE BROWSER FALLBACK ACTIVE';
