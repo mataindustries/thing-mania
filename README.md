@@ -103,28 +103,21 @@ See `QA_REPORT.md` for full test logs and execution metrics.
 
 ---
 
-## Instructions for Later Live Muse Spark 1.3 Integration
+## Controlled live Muse Spark test (local operator only)
 
-When live API access and credits are confirmed:
+The **real Meta Model API adapter** has been implemented but not yet tested with a live request. It uses `https://api.meta.ai/v1/chat/completions` and model `muse-spark-1.3`.
 
-1. Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-2. Set your actual Meta credentials in `.env` (never commit this file to git):
-   ```env
-   MODEL_API_KEY=your_actual_meta_model_api_key_here
-   MODEL_ENDPOINT=https://api.meta.example/v1/models/muse-spark-1.3
-   MOCK_MODE=false
-   MAX_SESSION_CALLS=10
-   MAX_SESSION_BUDGET_USD=1.00
-   PORT=3000
-   ```
-3. In `meta_adapter.js`, activate the live `fetch(MODEL_ENDPOINT, ...)` block:
-   - Provide system prompt with the JSON schema from `gameplan.js`.
-   - Transmit image bytes only when `userConsent === true`.
-   - Pipe response through `validateGamePlan()`.
-   - Real token counts, latency, and estimated cost will automatically populate `meta` readouts and update the on-screen hardware budget status.
+**Security patch (Oct 27):** Static file serving is allowlisted so the backend must never serve `.env`, internal source, or Git files. Cross-origin wildcard headers were removed, and the reset-session endpoint returns 403 in live mode. The credit counters remain **in-memory**, not durable billing limits. The server must not be deployed publicly with an API key or treated as multi-user safe.
+
+1. Run `npm test && npm run check` and inspect `git status`.
+2. Start a mock server: `PORT=3000 npm start`. Verify `/index.html` responds 200 and `/.env`, `/.git/config`, and `/meta_adapter.js` all respond 404.
+3. For an explicitly authorized single live test, stop the mock server and supply the key as an environment variable **without putting it in command history, tracked files, or chat**. Example using bash `read -rs -p 'Meta API key: ' MODEL_API_KEY; echo; export MODEL_API_KEY`.
+4. Run `MOCK_MODE=false MAX_SESSION_CALLS=1 MAX_RETRIES=0 MAX_SESSION_BUDGET_USD=0.05 PORT=3000 npm start`. These are per-process guardrails, **not** an absolute provider charge ceiling. Never expose this local server publicly.
+5. From the same protected preview, submit one small, user-owned photograph with explicit consent. Check status for `source: live_api`, model identifier, latency and tokens. Beware: fallback to mock or an invalid response is not a successful live integration. Stop the server after the experiment and `unset MODEL_API_KEY`.
+
+Muse Spark 1.3 Standard-mode published token rates are $1.25/M input and $4.25/M output (without assuming all image-accounting details). The in-memory cache hashes complete image content. The static arcade is still independently playable in mock mode.
+
+**Not implemented:** SAM 3.1 segmentation, production authentication, durable spending ledger, and a public safe live backend. The old 35-test summary above predates the live adapter patch; run current tests for the actual count.
 
 ---
 
