@@ -32,7 +32,8 @@ const MOCK_MODE             = process.env.MOCK_MODE !== 'false';  // default: tr
 const MAX_SESSION_CALLS     = parseInt(process.env.MAX_SESSION_CALLS   || '10',  10);
 const MAX_SESSION_BUDGET_USD= parseFloat(process.env.MAX_SESSION_BUDGET_USD || '1.00');
 const REQUEST_TIMEOUT_MS    = parseInt(process.env.REQUEST_TIMEOUT_MS  || '15000', 10);
-const MAX_RETRIES           = parseInt(process.env.MAX_RETRIES         || '2',   10);
+const MAX_RETRIES           = parseInt(process.env.MAX_RETRIES         || '0',   10);
+const MAX_COMPLETION_TOKENS = parseInt(process.env.MAX_COMPLETION_TOKENS || '5000', 10);
 // Muse Spark 1.3 Standard mode: $1.25/M input, $4.25/M output.
 // Estimates exclude image-token uncertainty and are NOT a durable/provider billing cap.
 const COST_PER_1K_INPUT_USD = parseFloat(process.env.COST_PER_1K_INPUT_USD  || '0.00125');
@@ -241,10 +242,10 @@ const SYSTEM_PROMPT = `You are the THING//MANIA Game Director for Meta Muse Spar
 Given a photo of everyday household objects, produce a single JSON GamePlan object that drives a chaotic three-round arcade game. The JSON must conform exactly to the provided schema.
 
 Rules:
-- detected_objects: list every clearly visible object with a stable short id (e.g. "obj_1"), short label, confidence 0-1, and bounding_box [x_min,y_min,x_max,y_max] as fractions 0-1.
+- detected_objects: list 1 to 3 clearly visible distinct objects (prefer the main foreground object) with a stable short id (e.g. "obj_1"), short label, confidence 0-1, and bounding_box [x_min,y_min,x_max,y_max] as fractions 0-1.
 - selected_object.id MUST match one of the ids in detected_objects. Never invent objects.
 - whimsical_role: a punchy, funny 5-10 word character description of the selected object.
-- announcer_lines: short, funny arcade-announcer-style sentences. Max 180 characters each.
+- announcer_lines: very short, funny arcade-announcer-style sentences, max 65 characters each. Keep the entire JSON compact.
 - round_modifiers: tune gameplay within the allowed numeric ranges. Heavier/faster objects → higher launch_impulse, faster rocks. Soft/lightweight objects → lower values, extra heart. Adjust theme_title (max 32 chars) and theme_accent (valid #RRGGBB hex) to match the object's character.
 - schema_version must be exactly "1.3.0".
 - source must be "meta_muse_spark_1.3".
@@ -339,8 +340,10 @@ async function callLiveAPI(imageDataUrl) {
       type:        'json_schema',
       json_schema: buildResponseSchema(),
     },
-    max_tokens:   1800,
-    temperature:  0.7,
+    // Reasoning consumes the same output budget as visible JSON. Give the
+    // relatively large GamePlan schema enough room to finish.
+    max_completion_tokens: MAX_COMPLETION_TOKENS,
+    reasoning_effort: 'minimal',
   };
 
   // Auth header built here; key never touches a string we might log
@@ -353,15 +356,40 @@ async function callLiveAPI(imageDataUrl) {
       await new Promise(r => setTimeout(r, 1000 * attempt));
     }
     try {
+      // Count BEFORE sending. A malformed model response can still be billable.
+      // This also makes a one-call limit effective on failures and retry attempts.
+      if (sessionState.calls >= MAX_SESSION_CALLS) {
+        throw new Error('SESSION_LIMIT_EXCEEDED: Live API attempt cap reached.');
+      }
+      if (sessionState.budgetUsedUsd >= MAX_SESSION_BUDGET_USD) {
+        throw new Error('BUDGET_EXCEEDED: Estimated spending cap reached.');
+      }
+      sessionState.calls++;
       const response = await httpsPost(MODEL_ENDPOINT, authHeaders, requestBody, REQUEST_TIMEOUT_MS);
       const body     = response.body;
+
+      // A 2xx response can still contain incomplete/invalid JSON. Record its
+      // token usage before validating content so the UI never shows 0 calls.
+      sessionState.liveCalls++;
+      const usedPrompt = Number(body?.usage?.prompt_tokens) || 0;
+      const usedCompletion = Number(body?.usage?.completion_tokens) || 0;
+      sessionState.totalPromptTokens += usedPrompt;
+      sessionState.totalCompletionTokens += usedCompletion;
+      sessionState.budgetUsedUsd += estimateCost(usedPrompt, usedCompletion);
 
       // Validate expected OpenAI-compatible chat completions shape
       if (!body.choices || !body.choices[0] || !body.choices[0].message) {
         throw new Error('API_BAD_SHAPE: Response missing choices[0].message');
       }
 
+      const finishReason = body.choices[0].finish_reason;
+      if (finishReason === 'length') {
+        throw new Error('API_OUTPUT_TRUNCATED: Model exhausted its completion-token budget before finishing the JSON.');
+      }
       const rawContent  = body.choices[0].message.content;
+      if (typeof rawContent !== 'string' || !rawContent.trim()) {
+        throw new Error('API_EMPTY_CONTENT: No completed JSON was returned.');
+      }
       const modelId     = body.model || MODEL_NAME;
       const usage       = body.usage || {};
       const promptTok   = usage.prompt_tokens     || 0;
@@ -529,10 +557,7 @@ async function interpretScene(options = {}) {
     tokenStats       = liveResult.usage;
     callCostUsd      = estimateCost(tokenStats.prompt_tokens, tokenStats.completion_tokens);
 
-    // Update live-call counters
-    sessionState.liveCalls++;
-    sessionState.totalPromptTokens     += tokenStats.prompt_tokens     || 0;
-    sessionState.totalCompletionTokens += tokenStats.completion_tokens || 0;
+    // Live attempt and usage were already counted before response parsing.
   }
 
   // ── 6. Validate & sanitise ─────────────────────────────────────────────────
@@ -549,8 +574,10 @@ async function interpretScene(options = {}) {
   }
 
   // ── 7. Session accounting ──────────────────────────────────────────────────
-  sessionState.calls++;
-  sessionState.budgetUsedUsd += callCostUsd;
+  if (useMock) {
+    sessionState.calls++;
+    sessionState.budgetUsedUsd += callCostUsd;
+  }
 
   const resultMeta = {
     model:              modelIdentifier,
