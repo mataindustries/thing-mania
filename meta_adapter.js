@@ -31,7 +31,7 @@ const MODEL_NAME            = process.env.MODEL_NAME || 'muse-spark-1.3';
 const MOCK_MODE             = process.env.MOCK_MODE !== 'false';  // default: true
 const MAX_SESSION_CALLS     = parseInt(process.env.MAX_SESSION_CALLS   || '10',  10);
 const MAX_SESSION_BUDGET_USD= parseFloat(process.env.MAX_SESSION_BUDGET_USD || '1.00');
-const REQUEST_TIMEOUT_MS    = parseInt(process.env.REQUEST_TIMEOUT_MS  || '15000', 10);
+const REQUEST_TIMEOUT_MS    = parseInt(process.env.REQUEST_TIMEOUT_MS  || '60000', 10);
 const MAX_RETRIES           = parseInt(process.env.MAX_RETRIES         || '0',   10);
 const MAX_COMPLETION_TOKENS = parseInt(process.env.MAX_COMPLETION_TOKENS || '5000', 10);
 // Muse Spark 1.3 Standard mode: $1.25/M input, $4.25/M output.
