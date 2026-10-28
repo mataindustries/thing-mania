@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "node --test test/*.test.js",
-    "check": "node --check game.js && node --check gameplan.js && node --check server.js && node --check meta_adapter.js && node --check sam_adapter.js && node --check test/*.test.js"
+    "check": "for f in game.js gameplan.js server.js meta_adapter.js sam_adapter.js test/*.test.js; do node --check \"$f\" || exit 1; done"
   },
   "keywords": [
     "meta-hackathon",
