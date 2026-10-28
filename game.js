@@ -19,6 +19,8 @@
   const roleBadge = document.querySelector('#roleBadge');
   const userConsent = document.querySelector('#userConsent');
   const analyzeBtn = document.querySelector('#analyzePhotoBtn');
+  const cutoutBtn = document.querySelector('#cutoutBtn');
+  const cutoutStatus = document.querySelector('#cutoutStatus');
   const budgetStatus = document.querySelector('#budgetStatus');
   const chipButtons = document.querySelectorAll('.chip-btn');
   const WIDTH = 420, HEIGHT = 640;
@@ -53,7 +55,8 @@
   const state = {
     scene:'menu', round:0, remaining:9, elapsed:0, score:0, won:[null,null,null], seed:7821,
     particles:[], texts:[], shake:0, flash:0, freeze:0, playTime:0, last:0,
-    photo:null, photoLabel:'MYSTERY THING', photoBase64:null, dragging:false, pointer:null,
+    photo:null, originalPhoto:null, cutout:false, photoLabel:'MYSTERY THING',
+    photoBase64:null, dragging:false, pointer:null,
     wreck:{angle:-0.85,omega:0,launched:false,hit:false,damage:0},
     ufo:{hits:0,misses:0,beam:0,beamGood:false,phase:0,abduct:0,winCountdown:0},
     lava:{x:210,targetX:210,rocks:[],spawn:0,hearts:2,invuln:0,dodge:0}
@@ -213,6 +216,9 @@
     const file=e.target.files?.[0];if(!file)return;
     if(file.size>12*1024*1024){photoNote.textContent='PHOTO TOO LARGE (MAX 12 MB)';return;}
     if(!file.type.startsWith('image/')){photoNote.textContent='PLEASE CHOOSE AN IMAGE';return;}
+    state.cutout = false; state.originalPhoto = null;
+    if (cutoutBtn) cutoutBtn.disabled = true;
+    if (cutoutStatus) { cutoutStatus.textContent = 'Analyze the new photo first.'; cutoutStatus.dataset.state = ''; }
     const reader = new FileReader();
     reader.onload = () => {
       state.photoBase64 = reader.result;
@@ -223,6 +229,7 @@
     const url=URL.createObjectURL(file);const image=new Image();
     image.onload=()=>{
       state.photo=image;
+      state.originalPhoto=image;
       state.photoLabel=file.name.replace(/\.[^.]+$/,'').slice(0,23)||'MY THING';
       photoNote.textContent=`USING: ${state.photoLabel.toUpperCase()} · PHOTO READY FOR META ANALYSIS`;
       if (roleBadge) roleBadge.textContent = `PROP: ${state.photoLabel.toUpperCase()} · AWAITING DIRECTOR ANALYSIS`;
@@ -254,6 +261,11 @@
         if (resp.ok && data.plan && !data.meta?.fallback_activated) {
           applyPlanToStages(data.plan);
           setStatus(`DIRECTOR: ${data.plan.selected_object.label.toUpperCase()} LOADED (${data.cached ? 'CACHED' : 'META ANALYZED'})`);
+          if (cutoutBtn && state.originalPhoto) cutoutBtn.disabled = false;
+          if (cutoutStatus) {
+            cutoutStatus.textContent = `READY: CUT OUT ${data.plan.selected_object.label.toUpperCase()} · OPTIONAL SAM 3.1`;
+            cutoutStatus.dataset.state = 'ready';
+          }
         } else {
           activateFallback(data.fallback_plan || data.plan || null);
         }
@@ -266,6 +278,67 @@
       }
     });
   }
+
+
+  // Explicit second opt-in: Muse understands the object; SAM isolates it.
+  async function makeSamSticker() {
+    if (!state.originalPhoto || !activePlan?.selected_object?.label) return;
+    if (!userConsent.checked) { alert('Approve photo transmission first.'); return; }
+    cutoutBtn.disabled = true;
+    cutoutStatus.textContent = 'SAM 3.1: CUTTING OUT YOUR CHARACTER...';
+    cutoutStatus.dataset.state = '';
+    let apiAttempted = false;
+    try {
+      const image = state.originalPhoto;
+      const canvas = document.createElement('canvas');
+      const sourceW = image.naturalWidth || image.width;
+      const sourceH = image.naturalHeight || image.height;
+      const scale = Math.min(1, 1024 / Math.max(sourceW, sourceH));
+      canvas.width = Math.max(1, Math.round(sourceW * scale));
+      canvas.height = Math.max(1, Math.round(sourceH * scale));
+      canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+      const imageBase64 = canvas.toDataURL('image/jpeg', 0.85);
+      if (imageBase64.length > 5_000_000) throw new Error('PHOTO_TOO_LARGE');
+      apiAttempted = true;
+      const resp = await fetch('/api/sticker/cutout', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ imageBase64, concept: activePlan.selected_object.label, userConsent: true })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.success || !data.path || !data.box) {
+        throw new Error(data.error || 'SAM_API_ERROR');
+      }
+      const b = data.box;
+      const w = Math.round(b.right - b.left), h = Math.round(b.bottom - b.top);
+      if (!Number.isFinite(w) || !Number.isFinite(h) || w < 1 || h < 1 ||
+          w > canvas.width || h > canvas.height || b.left < 0 || b.top < 0 ||
+          b.right > canvas.width || b.bottom > canvas.height) throw new Error('INVALID_MASK_BOUNDS');
+      const cut = document.createElement('canvas');
+      cut.width = w; cut.height = h;
+      const cc = cut.getContext('2d');
+      cc.drawImage(canvas, -b.left, -b.top);
+      cc.globalCompositeOperation = 'destination-in';
+      cc.fillStyle = '#fff';
+      cc.fill(new Path2D(data.path));
+      cc.globalCompositeOperation = 'source-over';
+      const sprite = new Image();
+      await new Promise((resolve, reject) => {
+        sprite.onload = resolve; sprite.onerror = reject;
+        sprite.src = cut.toDataURL('image/png');
+      });
+      state.photo = sprite;
+      state.cutout = true;
+      cutoutStatus.textContent = `STICKER UNLOCKED: ${data.concept.toUpperCase()} · SAM 3.1 ${data.cached ? 'CACHED' : 'LIVE'}`;
+      cutoutStatus.dataset.state = 'ready';
+      setStatus('SAM 3.1: BACKGROUND REMOVED / PLAY YOUR CHARACTER');
+    } catch (err) {
+      cutoutStatus.textContent = `CUTOUT UNAVAILABLE (${String(err.message || 'ERROR').slice(0, 38)}) · GAME STILL WORKS`;
+      cutoutStatus.dataset.state = 'error';
+      if (!apiAttempted) cutoutBtn.disabled = false;
+    } finally { fetchBudgetStatus(); }
+  }
+  if (cutoutBtn) cutoutBtn.addEventListener('click', makeSamSticker);
 
   // Handle Fixture Buttons
   chipButtons.forEach(btn => {
@@ -337,7 +410,11 @@
           analyzeBtn.disabled = true;
           analyzeBtn.textContent = 'SESSION API LIMIT REACHED — RESTART BACKEND TO RETRY';
         }
-        if (budgetStatus) budgetStatus.textContent = `EST. SESSION SPEND: ${a.budget_used_usd.toFixed(2)} / ${a.max_budget_usd.toFixed(2)} CEILING · API ATTEMPTS: ${a.session_calls}/${a.max_session_calls} · META RESPONSES: ${a.live_calls} · CACHE: ${a.cache_hits}`;
+        const sam = data.sam;
+        if (budgetStatus) budgetStatus.textContent = `MUSE EST: ${a.budget_used_usd.toFixed(3)} · MUSE: ${a.session_calls}/${a.max_session_calls} · SAM: ${sam?.attempts ?? 0}/${sam?.max_attempts ?? 1} · SAM EST: ${(sam?.estimated_spend_usd ?? 0).toFixed(4)}`;
+        if (sam && sam.attempts >= sam.max_attempts && cutoutBtn && !state.cutout) {
+          cutoutBtn.disabled = true;
+        }
       }
     } catch (_) {
       if (budgetStatus) budgetStatus.textContent = 'MODE: 100% OFFLINE BROWSER FALLBACK ACTIVE';
@@ -462,6 +539,17 @@
   function star(x,y,n=7,r=18,color='#ffef8c'){const v=[];for(let i=0;i<n*2;i++){const a=(i*Math.PI/n)-Math.PI/2,rr=i%2?r*.46:r;v.push([x+Math.cos(a)*rr,y+Math.sin(a)*rr]);}path(v,color);}
   function drawThing(x,y,size=74,rot=0,glow=false){
     c.save();c.translate(x,y);c.rotate(rot);
+    if (state.cutout && state.photo) {
+      const im = state.photo;
+      const w = im.naturalWidth || im.width, h = im.naturalHeight || im.height;
+      const fit = Math.min(size * 1.15 / w, size * 1.15 / h);
+      c.shadowColor = '#fff0b0';
+      c.shadowBlur = glow ? 20 : 9;
+      c.shadowOffsetY = 3;
+      c.drawImage(im, -w * fit / 2, -h * fit / 2, w * fit, h * fit);
+      c.restore();
+      return;
+    }
     if(glow)c.shadowColor='#fff08a',c.shadowBlur=21;
     c.fillStyle='rgba(0,0,0,.28)';c.beginPath();c.ellipse(5,8,size*.55,size*.55,0,0,TAU);c.fill();
     path([[-size*.53,-size*.47],[size*.43,-size*.54],[size*.56,-size*.38],[size*.51,size*.46],[-size*.45,size*.55],[-size*.57,size*.35]],'#fff5cb','#181327',5);
