@@ -33,10 +33,10 @@ const MAX_SESSION_CALLS     = parseInt(process.env.MAX_SESSION_CALLS   || '10', 
 const MAX_SESSION_BUDGET_USD= parseFloat(process.env.MAX_SESSION_BUDGET_USD || '1.00');
 const REQUEST_TIMEOUT_MS    = parseInt(process.env.REQUEST_TIMEOUT_MS  || '15000', 10);
 const MAX_RETRIES           = parseInt(process.env.MAX_RETRIES         || '2',   10);
-// Muse Spark 1.3 pricing estimate (update when published).
-// input: $0.0015 / 1k tokens;  output: $0.0020 / 1k tokens
-const COST_PER_1K_INPUT_USD = parseFloat(process.env.COST_PER_1K_INPUT_USD  || '0.0015');
-const COST_PER_1K_OUTPUT_USD= parseFloat(process.env.COST_PER_1K_OUTPUT_USD || '0.0020');
+// Muse Spark 1.3 Standard mode: $1.25/M input, $4.25/M output.
+// Estimates exclude image-token uncertainty and are NOT a durable/provider billing cap.
+const COST_PER_1K_INPUT_USD = parseFloat(process.env.COST_PER_1K_INPUT_USD  || '0.00125');
+const COST_PER_1K_OUTPUT_USD= parseFloat(process.env.COST_PER_1K_OUTPUT_USD || '0.00425');
 
 // ── In-memory session state ───────────────────────────────────────────────────
 const planCache = new Map();
@@ -73,7 +73,8 @@ function computeCacheKey(payload) {
   }
   if (payload.imageBase64) {
     const s = String(payload.imageBase64);
-    h.update(`img_len:${s.length};head:${s.slice(0, 65536)};`);
+    h.update(`img_len:${s.length};`);
+    h.update(s); // hash the entire image; different photos must not share a cache key
   }
   if (payload.clientSeed != null) {
     h.update(`seed:${payload.clientSeed};`);
@@ -280,9 +281,8 @@ function httpsPost(url, headers, bodyObj, timeoutMs) {
           try { resolve({ statusCode: res.statusCode, body: JSON.parse(data) }); }
           catch (e) { reject(new Error(`API_JSON_PARSE_ERROR: ${e.message}`)); }
         } else {
-          // Avoid echoing error bodies that might contain key hints
-          const safeMsg = data.slice(0, 200).replace(/sk-[^\s"]+/gi, '[REDACTED]');
-          reject(new Error(`API_HTTP_${res.statusCode}: ${safeMsg}`));
+          // Upstream error bodies may contain sensitive content: never echo them to clients/logs.
+          reject(new Error(`API_HTTP_${res.statusCode}`));
         }
       });
     });
@@ -339,7 +339,7 @@ async function callLiveAPI(imageDataUrl) {
       type:        'json_schema',
       json_schema: buildResponseSchema(),
     },
-    max_tokens:   900,
+    max_tokens:   1800,
     temperature:  0.7,
   };
 
