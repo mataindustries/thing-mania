@@ -17,3 +17,10 @@
 .analyze-btn:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
 .analyze-btn:not(:disabled):active{transform:translate(1px,1px);box-shadow:1px 1px 0 #080710}
 .budget-status{font:900 8.5px monospace;color:#a59cb8;margin-top:7px;text-align:center;letter-spacing:.03em}
+
+/* v0.4: Optional mask extraction — intentionally separate paid opt-in. */
+.cutout-btn{background:var(--mint);color:#171322;font-size:11px;min-height:39px}
+.cutout-btn:not(:disabled):active{transform:translate(1px,1px)}
+.cutout-status{display:block;font:700 10px/1.45 system-ui,Arial;color:#c7c0d4;padding:2px 0 3px}
+.cutout-status[data-state="ready"]{color:#83f2d2}
+.cutout-status[data-state="error"]{color:#ff9bac}
