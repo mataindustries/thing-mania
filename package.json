@@ -1,12 +1,12 @@
 {
   "name": "thing-mania-arcade",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "THING//MANIA: Pocket Mayhem with Meta Muse Spark Game Director",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "test": "node --test test/*.test.js",
-    "check": "node --check game.js gameplan.js server.js meta_adapter.js test/*.test.js"
+    "check": "node --check game.js && node --check gameplan.js && node --check server.js && node --check meta_adapter.js && node --check sam_adapter.js && node --check test/*.test.js"
   },
   "keywords": [
     "meta-hackathon",
@@ -16,5 +16,9 @@
     "game-director"
   ],
   "author": "Hackathon Participant",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@meta-sam/parser": "^0.1.0",
+    "openai": "^6.0.0"
+  }
 }
