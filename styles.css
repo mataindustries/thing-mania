@@ -34,3 +34,10 @@
  font:800 10px/1.4 monospace;letter-spacing:.04em;padding:3px 0}
 .fixture-details[open] .fixture-row{margin:8px 0 6px}
 .arcade-shell{scroll-margin-top:12px}
+
+/* Shareable finale, deliberately hidden until the final score. */
+.share-btn{width:100%;border:2px solid #171322;border-radius:6px;
+  margin-top:12px;padding:12px 8px;background:#ff5d86;color:#fff3c5;
+  box-shadow:3px 3px 0 #171322;font:900 12px system-ui,Arial;letter-spacing:.03em}
+.share-btn[hidden]{display:none}
+.share-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 #171322}
