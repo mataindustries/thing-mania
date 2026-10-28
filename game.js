@@ -214,6 +214,7 @@
 
   document.querySelector('#photo').addEventListener('change',e=>{
     const file=e.target.files?.[0];if(!file)return;
+    if (analyzeBtn) analyzeBtn.disabled = true;
     if(file.size>12*1024*1024){photoNote.textContent='PHOTO TOO LARGE (MAX 12 MB)';return;}
     if(!file.type.startsWith('image/')){photoNote.textContent='PLEASE CHOOSE AN IMAGE';return;}
     state.cutout = false; state.originalPhoto = null;
@@ -332,6 +333,9 @@
       cutoutStatus.textContent = `STICKER UNLOCKED: ${data.concept.toUpperCase()} · SAM 3.1 ${data.cached ? 'CACHED' : 'LIVE'}`;
       cutoutStatus.dataset.state = 'ready';
       setStatus('SAM 3.1: BACKGROUND REMOVED / PLAY YOUR CHARACTER');
+      document.querySelector('.arcade-shell')?.scrollIntoView({
+        behavior: 'smooth', block: 'start'
+      });
     } catch (err) {
       cutoutStatus.textContent = `CUTOUT UNAVAILABLE (${String(err.message || 'ERROR').slice(0, 38)}) · GAME STILL WORKS`;
       cutoutStatus.dataset.state = 'error';
