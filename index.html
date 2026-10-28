@@ -14,6 +14,34 @@
       <div class="brand">THING<span>//</span>MANIA <sup>v0.4</sup></div>
       <div class="byline">THE WORLD IS YOUR ARCADE <span class="spark">✳</span></div>
     </header>
+    <div class="below">
+      <label class="filebutton" for="photo">↥ USE MY THING<input id="photo" type="file" accept="image/*"></label>
+      <button type="button" class="secondary" id="demo">↻ RESET</button>
+    </div>
+    <div id="photoNote" class="photo-status" aria-live="polite">USING: DEFAULT MYSTERY OBJECT</div>
+    <div class="director-box">
+      <div class="director-header" id="directorHeader">✹ META GAME DIRECTOR · CHECKING BACKEND ✹</div>
+      <details class="fixture-details"><summary>DEVELOPER FIXTURES (OFFLINE)</summary><div class="fixture-row">
+        <span class="fixture-label">TRY DIVERSE META FIXTURES:</span>
+        <div class="fixture-chips" role="group" aria-label="Fixture selection">
+          <button type="button" class="chip-btn" data-fixture="toy_car">🚗 HOT ROD</button>
+          <button type="button" class="chip-btn" data-fixture="kitchen_object">🧽 SPONGE</button>
+          <button type="button" class="chip-btn" data-fixture="stuffed_animal">🧸 PLUSH BEAR</button>
+          <button type="button" class="chip-btn active" data-fixture="default">↺ DEFAULT</button>
+        </div>
+      </div></details>
+      <div class="consent-row">
+        <label class="consent-checkbox" for="userConsent">
+          <input type="checkbox" id="userConsent">
+          <span>I agree to send this photo to Meta for optional AI analysis and cutout</span>
+        </label>
+        <button type="button" id="analyzePhotoBtn" class="analyze-btn" disabled>⚡ ANALYZE PHOTO WITH META AI</button>
+        <button type="button" id="cutoutBtn" class="analyze-btn cutout-btn" disabled>✂ CUT OUT MY THING · SAM 3.1</button>
+        <small id="cutoutStatus" class="cutout-status" aria-live="polite">After Meta identifies your object, turn it into a sticker. One optional SAM request (~$0.0025).</small>
+      </div>
+      <div class="budget-status" id="budgetStatus">SESSION SPEND: $0.00 / $1.00 CEILING · CALLS: 0 / 10 · 100% OFFLINE CAPABLE</div>
+    </div>
+
     <div class="arcade-shell">
       <div class="arcade-hardware"><span>● REC</span><span>POCKET MAYHEM SYSTEM™</span><span>LIVE <i></i></span></div>
       <div class="screen-wrap">
@@ -34,34 +62,6 @@
     
     <div id="roleBadge" class="role-badge" aria-live="polite">PROP: MYSTERY THING · ROLE: CHAOTIC ARCADE PROP</div>
 
-    <div class="director-box">
-      <div class="director-header" id="directorHeader">✹ META GAME DIRECTOR · CHECKING BACKEND ✹</div>
-      <div class="fixture-row">
-        <span class="fixture-label">TRY DIVERSE META FIXTURES:</span>
-        <div class="fixture-chips" role="group" aria-label="Fixture selection">
-          <button type="button" class="chip-btn" data-fixture="toy_car">🚗 HOT ROD</button>
-          <button type="button" class="chip-btn" data-fixture="kitchen_object">🧽 SPONGE</button>
-          <button type="button" class="chip-btn" data-fixture="stuffed_animal">🧸 PLUSH BEAR</button>
-          <button type="button" class="chip-btn active" data-fixture="default">↺ DEFAULT</button>
-        </div>
-      </div>
-      <div class="consent-row">
-        <label class="consent-checkbox" for="userConsent">
-          <input type="checkbox" id="userConsent" checked>
-          <span>Consent: Send photo to local Meta Director adapter (MODEL_API_KEY server-side)</span>
-        </label>
-        <button type="button" id="analyzePhotoBtn" class="analyze-btn" disabled>⚡ ANALYZE PHOTO WITH META AI</button>
-        <button type="button" id="cutoutBtn" class="analyze-btn cutout-btn" disabled>✂ CUT OUT MY THING · SAM 3.1</button>
-        <small id="cutoutStatus" class="cutout-status" aria-live="polite">After Meta identifies your object, turn it into a sticker. One optional SAM request (~$0.0025).</small>
-      </div>
-      <div class="budget-status" id="budgetStatus">SESSION SPEND: $0.00 / $1.00 CEILING · CALLS: 0 / 10 · 100% OFFLINE CAPABLE</div>
-    </div>
-
-    <div class="below">
-      <label class="filebutton" for="photo">↥ USE MY THING<input id="photo" type="file" accept="image/*"></label>
-      <button type="button" class="secondary" id="demo">↻ RESET</button>
-    </div>
-    <div id="photoNote" class="photo-status" aria-live="polite">USING: DEFAULT MYSTERY OBJECT</div>
     <p class="disclaimer"><b>Hackathon prototype · 100% new game code.</b> Meta Muse Spark 1.3 GamePlan director supports live API and offline mock mode. API keys are kept strictly on the local backend server and never in client JavaScript. No photo is sent without your explicit approval.</p>
     <footer>DON'T PANIC / DO PANIC / PASS THE PHONE</footer>
   </main>
