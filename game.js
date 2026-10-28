@@ -9,6 +9,7 @@
   const c = canvas.getContext('2d');
   const modal = document.querySelector('#modal');
   const primary = document.querySelector('#primaryBtn');
+  const shareBtn = document.querySelector('#shareBtn');
   const stamp = document.querySelector('#ticketStamp');
   const title = document.querySelector('#ticketTitle');
   const body = document.querySelector('#ticketBody');
@@ -134,6 +135,7 @@
 
   function setModal(kind){
     modal.hidden=false;badges.hidden=true;
+    if (shareBtn) shareBtn.hidden = kind !== 'summary';
     const lines = activePlan.announcer_lines;
     if(kind==='menu'){
       stamp.textContent='✹ OFFICIAL NONSENSE MACHINE ✹';
@@ -171,6 +173,86 @@
       sub.textContent='PASS THE PHONE · CHALLENGE A FRIEND';
     }
   }
+
+
+  // A private, local 9:16 result card. Nothing uploaded or sent to a server.
+  async function shareIncident() {
+    const result = document.createElement('canvas');
+    result.width = 720; result.height = 1280;
+    const g = result.getContext('2d');
+    const W = result.width;
+    g.fillStyle = '#171322'; g.fillRect(0, 0, W, result.height);
+    // Scanline-free bold party-poster design: strong enough for a screenshot.
+    g.fillStyle = '#312444';
+    for (let i=0; i<13; i++) {
+      const y=50+i*91;
+      g.fillRect(28+(i%3)*12, y, 660-(i%3)*25, 2);
+    }
+    g.fillStyle = '#fdf071'; g.fillRect(28, 26, 664, 94);
+    g.fillStyle = '#171322';
+    g.font = '1000 52px system-ui,Arial'; g.textAlign = 'center';
+    g.fillText('THING//MANIA', W/2, 91);
+    g.fillStyle = '#fff3c5'; g.font = '900 27px monospace';
+    g.fillText('OFFICIAL INCIDENT REPORT', W/2, 178);
+    const label = (activePlan.selected_object?.label || state.photoLabel).toUpperCase();
+    const role = (activePlan.whimsical_role || 'MYSTERY CHAOS PROTAGONIST').toUpperCase();
+    function fitLine(value, y, maxFont, width, color) {
+      const text = String(value).slice(0, 70);
+      let size = maxFont;
+      do { g.font = '1000 ' + size + 'px system-ui,Arial'; size -= 2; }
+      while (g.measureText(text).width > width && size > 19);
+      g.fillStyle=color; g.fillText(text, W/2, y);
+    }
+    fitLine(label, 249, 47, 640, '#ff87a9');
+    g.fillStyle = '#fff3c5'; g.fillRect(96, 294, 528, 530);
+    g.fillStyle = '#2b2140'; g.fillRect(110, 308, 500, 502);
+    const source = state.photo;
+    if (source && (source.naturalWidth || source.width)) {
+      const w=source.naturalWidth || source.width, h=source.naturalHeight || source.height;
+      const fit=Math.min(470/w, 470/h);
+      g.save();
+      g.shadowColor='#ffe78c'; g.shadowBlur=30;
+      g.drawImage(source, W/2-(w*fit)/2, 558-(h*fit)/2, w*fit, h*fit);
+      g.restore();
+    } else {
+      g.fillStyle='#fdf071';g.font='1000 220px system-ui';g.fillText('?!',W/2,615);
+    }
+    g.fillStyle = '#fdf071'; g.fillRect(48, 856, 624, 114);
+    g.fillStyle = '#171322';g.font='1000 68px system-ui,Arial';
+    g.fillText(String(state.score).padStart(4,'0')+' PTS',W/2,933);
+    const modes=['WRECK','BEAM','ESCAPE'];
+    for (let i=0;i<3;i++) {
+      const x=50+i*215;
+      g.fillStyle=state.won[i]?'#53e8cb':'#ff5d86';
+      g.fillRect(x,988,190,69);
+      g.fillStyle='#171322';g.font='900 27px monospace';
+      g.fillText((state.won[i]?'✓ ':'✕ ')+modes[i],x+95,1035);
+    }
+    fitLine(role,1130,28,652,'#fff3c5');
+    g.fillStyle='#ff87a9';g.font='900 24px monospace';
+    g.fillText('ONE PHOTO · THREE GAMES · ALL CHAOS',W/2,1192);
+    g.fillStyle='#978fa8';g.font='700 19px monospace';
+    g.fillText('Made with Meta Muse Spark 1.3'+(state.cutout?' + SAM 3.1':''), W/2,1235);
+    const blob = await new Promise(resolve => result.toBlob(resolve, 'image/png'));
+    if (!blob) return;
+    const file = new File([blob], 'thingmania-incident.png', {type:'image/png'});
+    try {
+      if (navigator.canShare?.({files:[file]}) && navigator.share) {
+        await navigator.share({files:[file],title:'THING//MANIA Incident Report',
+          text:'My household object survived the THING//MANIA arcade.'});
+        return;
+      }
+    } catch (error) {
+      if (error.name === 'AbortError') return;
+    }
+    const href = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=href; a.download='thingmania-incident.png'; a.click();
+    setTimeout(()=>URL.revokeObjectURL(href),3000);
+  }
+  if (shareBtn) shareBtn.addEventListener('click', () => {
+    shareIncident().catch(() => setStatus('INCIDENT CARD: SAVE FAILED / TRY AGAIN'));
+  });
 
   function beginSession(){
     state.round=0;state.score=0;state.won=[null,null,null];
