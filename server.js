@@ -92,11 +92,18 @@ function readBody(req, limitBytes = 12 * 1024 * 1024) {
   });
 }
 
+const PUBLIC_FILES = new Set(['index.html', 'styles.css', 'game.js', 'gameplan.js', 'favicon.ico']);
+
 function serveStatic(req, res, pathname) {
-  let relativePath = pathname === '/' ? '/index.html' : pathname;
-  // Prevent directory traversal
-  const safePath = path.normalize(relativePath).replace(/^(\.\.[\/\\])+/, '');
-  const filePath = path.join(__dirname, safePath);
+  const relativePath = pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, '');
+  // Explicit allowlist: never serve .env, source-only files, tests, git internals, or credentials.
+  if (!PUBLIC_FILES.has(relativePath)) {
+    setSecurityHeaders(res);
+    res.statusCode = 404;
+    res.end('404 Not Found');
+    return;
+  }
+  const filePath = path.join(__dirname, relativePath);
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
@@ -121,10 +128,7 @@ function createServer() {
     const pathname = parsedUrl.pathname;
     const method = req.method.toUpperCase();
 
-    // CORS preflight / headers for local dev
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    // Same-origin browser client only. Do not expose permissive cross-origin access.
 
     if (method === 'OPTIONS') {
       res.statusCode = 204;
@@ -151,8 +155,11 @@ function createServer() {
 
       // 3. Reset Session API (for test runs)
       if (method === 'POST' && pathname === '/api/reset-session') {
+        if (process.env.MOCK_MODE === 'false') {
+          return sendJson(res, 403, { success: false, error: 'Session reset disabled during live API mode.' });
+        }
         resetSession();
-        return sendJson(res, 200, { success: true, message: 'Session budget and call counters reset.' });
+        return sendJson(res, 200, { success: true, message: 'Mock session reset.' });
       }
 
       // 4. Meta Scene Interpretation API
