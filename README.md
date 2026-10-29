@@ -51,6 +51,7 @@ A single SAM 3.1 image costs approximately **$0.0025** (Meta published rate, sub
 - `gameplan.js` — schema validation, bounds checks, and offline safe defaults.
 - `meta_adapter.js` — Meta Muse Spark image interpretation, with limited calls, caching, and fallback.
 - `sam_adapter.js` — explicit SAM 3.1 image segmentation via Meta's official `@meta-sam/parser` and OpenAI-compatible SDK.
+- `stage_machine.js` — Chaos Stage Machine: deterministic, allowlisted StageRecipes (atmosphere / set / props / fx) for six worlds — Haunted House, Cursed Diner, Night Farm, Alien Drive-Through, Volcano and Industrial Meltdown — plus the copy guard that keeps model lines on-world. Remixing is visual-only and makes zero API calls.
 - `server.js` — local-only HTTP server, photo-consent enforcement, static-file allowlist, and private credential proxy.
 - `test/` — deterministic offline tests. **Live SAM integration must be verified separately.**
 
@@ -74,7 +75,8 @@ BEAM locks its countdown on the final catch and adds a short victory flourish.
 LAVA survival has a 1.05-second celebration before the ticket.
 
 The **Chaos Report** presents the actual `state.photo` image as its hero, name,
-generated role, total score, WRECK/BEAM/LAVA outcomes, and threat class. Its local
+generated role, total score, WRECK/BEAM/DODGE outcomes with the world each round
+was played in, and threat class. Its local
 720×1280 PNG preserves transparent sprites and ordinary photos, uses original
 Canvas framing, and keeps native file sharing plus download fallback. No image
 generation or new runtime dependencies are used.
