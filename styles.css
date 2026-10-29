@@ -59,3 +59,7 @@
 .report-score[hidden]{display:none}
 button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.ticket{transform:none!important}*,*::before,*::after{animation:none!important;scroll-behavior:auto!important}}
+.remix-btn{width:100%;margin-top:10px;padding:11px 10px;border:3px dashed #151126;border-radius:6px;background:#fdf071;color:#151126;font:1000 12px/1.2 system-ui,Arial,sans-serif;letter-spacing:.03em;box-shadow:3px 4px 0 #151126;transform:rotate(.6deg)}
+.remix-btn[hidden]{display:none}
+.remix-btn:active{transform:translate(2px,2px) rotate(.6deg);box-shadow:1px 1px 0 #151126}
+.remix-btn:focus-visible{outline:3px solid var(--blue);outline-offset:4px}

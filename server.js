@@ -93,7 +93,7 @@ function readBody(req, limitBytes = 12 * 1024 * 1024) {
   });
 }
 
-const PUBLIC_FILES = new Set(['index.html', 'styles.css', 'game.js', 'gameplan.js', 'favicon.ico']);
+const PUBLIC_FILES = new Set(['index.html', 'styles.css', 'game.js', 'gameplan.js', 'stage_machine.js', 'favicon.ico']);
 
 function serveStatic(req, res, pathname) {
   const relativePath = pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, '');

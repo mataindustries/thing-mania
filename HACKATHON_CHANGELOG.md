@@ -1,5 +1,13 @@
 # Hackathon change log — clean provenance
 
+**2026-10-29 · THING//MANIA — Chaos Stage Machine v1 (feat/chaos-stage-machine)**
+
+- **Deterministic StageRecipe system (`stage_machine.js`)**: four slots — ATMOSPHERE, SET, PROPS, FX — filled from a per-game allowlist. Recipes are frozen plain data (no code, URLs or images), validated, and derived from the validated GamePlan (label, role, theme titles → safe tags such as `spooky`, `kitchen`, `roadside`) plus a remix count, on a dedicated visual RNG. Remix 0 is the director's cut (best tag match; the original art wins ties); every remix after that is a seeded weighted draw that must leave the current world behind.
+- **WRECK IT has two worlds**: the original **Haunted House** (untouched; still the default) and the new **Cursed Diner** — crooked railcar diner with a possessed EAT pylon and flickering neon, a giant metal-rimmed soup can and a burnt-toast spectator who react to the swing, condiments/parking-lot props, chef-hatted kitchen spirits on the same ghost schedule, and its own roof-pop, rubble and CLOSED sign. Extra modules: Toxic Moon, Pumpkin Patch, Greasy Sunset, Fried-Egg Moon, Will-o'-wisps, Grease Steam, Neon Moths.
+- **REMIX THE CHAOS**: one tap on the menu, WRECK IT ticket or report re-rolls the stage with a 1.4 s "ASSEMBLING MAYHEM" snap-in (0.6 s fade under reduced motion). Zero API calls; GamePlan, photo and SAM sticker untouched; unavailable mid-round. `?remix=N` reproduces any composition.
+- **BEAM IT / DODGE IT** consume the same interface (Aurora Night, Eclipse Glow alternates).
+- Collision, swing physics, timers, scoring and gameplay RNG never read the recipe; `test/stage_machine.test.js` proves identical traces, scores and rock lanes across worlds. Visual comparison: `docs/stage-machine-v1.jpg`.
+
 **2026-10-27 · THING//MANIA v0.3 — Meta GamePlan Director (feat/meta-gameplan)**
 
 Sprint achievements authored during the Hackathon:
