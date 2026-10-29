@@ -78,7 +78,7 @@ describe('DOM Contract, Mobile Layout & ARIA Accessibility QA', () => {
     const stagesDef = [
       { name: 'WRECK IT!', round: 0 },
       { name: 'BEAM IT!', round: 1 },
-      { name: 'RUN FOR IT!', round: 2 }
+      { name: 'DODGE IT!', round: 2 }
     ];
 
     for (const st of stagesDef) {

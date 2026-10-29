@@ -6,7 +6,7 @@ Created as fresh code for the [Meta Global AI Developer Hackathon](https://dev.m
 
 1. **WRECK IT** — launch your object at a haunted house.
 2. **BEAM IT** — time a UFO abduction.
-3. **RUN FOR IT** — dodge falling lava rocks.
+3. **DODGE IT** — dodge falling lava rocks.
 
 ## The AI-powered reveal
 

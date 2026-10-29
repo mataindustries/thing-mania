@@ -50,7 +50,7 @@
   const stages = [
     {name: 'WRECK IT!', theme: 'THE HAUNTED HOUSE', hint:'DRAG BACK. LET FLY.', seconds: 9, color:'#ff6f98'},
     {name: 'BEAM IT!', theme: 'THE UFO INCIDENT', hint:'TAP WHEN THE THING IS UNDER THE UFO.', seconds: 10, color:'#7ff2d4'},
-    {name: 'RUN FOR IT!', theme: 'VOLCANO VACATION', hint:'SLIDE LEFT/RIGHT. DODGE HOT ROCKS.', seconds: 10, color:'#ffcd63'}
+    {name: 'DODGE IT!', theme: 'VOLCANO VACATION', hint:'SLIDE LEFT/RIGHT. DODGE HOT ROCKS.', seconds: 10, color:'#ffcd63'}
   ];
 
   const state = {
