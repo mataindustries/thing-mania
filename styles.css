@@ -41,3 +41,21 @@
   box-shadow:3px 3px 0 #171322;font:900 12px system-ui,Arial;letter-spacing:.03em}
 .share-btn[hidden]{display:none}
 .share-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 #171322}
+
+/* Payoff sprint: a collectible ticket that fits the cabinet on small phones. */
+.modal{overflow-y:auto;overscroll-behavior:contain}
+.ticket{max-height:100%;overflow-y:auto;scrollbar-width:thin}
+#reportPortrait{width:100%;height:clamp(105px,32vw,160px);aspect-ratio:auto;object-fit:contain;touch-action:auto;background:radial-gradient(ellipse,#ffe393 0%,#f5d58d 40%,transparent 70%);margin:4px auto}
+#reportPortrait[hidden]{display:none}
+.modal[data-kind="summary"]{padding:10px}
+.modal[data-kind="summary"] .ticket{padding:12px 14px;transform:rotate(-1deg)}
+.modal[data-kind="summary"] h1{font-size:clamp(22px,6.5vw,31px);line-height:1;letter-spacing:-.045em;margin:6px 0;overflow-wrap:anywhere}
+.modal[data-kind="summary"] #ticketBody{font-size:12px;margin:5px 0 8px;max-width:none}
+.modal[data-kind="summary"] .badges{margin:8px 0}
+.modal[data-kind="summary"] .subnote{font-size:11px;opacity:1;margin:8px 0;color:#a42150}
+.modal[data-kind="summary"] .share-btn{margin-top:8px;background:#d92d61;min-height:44px}
+.modal[data-kind="summary"] .bigbutton{padding:10px;font-size:11px}
+.report-score{font:1000 29px/1 system-ui;color:#191329;letter-spacing:-.04em;margin:8px 0}
+.report-score[hidden]{display:none}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.ticket{transform:none!important}*,*::before,*::after{animation:none!important;scroll-behavior:auto!important}}

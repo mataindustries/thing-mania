@@ -15,7 +15,7 @@
       <div class="byline">THE WORLD IS YOUR ARCADE <span class="spark">✳</span></div>
     </header>
     <div class="below">
-      <label class="filebutton" for="photo">↥ USE MY THING<input id="photo" type="file" accept="image/*"></label>
+      <label class="filebutton" for="photo">ENTER THE TEST CHAMBER<input id="photo" type="file" accept="image/*"></label>
       <button type="button" class="secondary" id="demo">↻ RESET</button>
     </div>
     <div id="photoNote" class="photo-status" aria-live="polite">USING: DEFAULT MYSTERY OBJECT</div>
@@ -33,10 +33,10 @@
       <div class="consent-row">
         <label class="consent-checkbox" for="userConsent">
           <input type="checkbox" id="userConsent">
-          <span>I agree to send this photo to Meta for optional AI analysis and cutout</span>
+          <span>I agree to send this photo to Meta for optional analysis (Muse Spark) or segmentation (SAM). Each action requires its own click.</span>
         </label>
-        <button type="button" id="analyzePhotoBtn" class="analyze-btn" disabled>⚡ ANALYZE PHOTO WITH META AI</button>
-        <button type="button" id="cutoutBtn" class="analyze-btn cutout-btn" disabled>✂ CUT OUT MY THING · SAM 3.1</button>
+        <button type="button" id="analyzePhotoBtn" class="analyze-btn" disabled>SCAN THE SPECIMEN</button>
+        <button type="button" id="cutoutBtn" class="analyze-btn cutout-btn" disabled>ACTIVATE DIMENSION PORTAL</button>
         <small id="cutoutStatus" class="cutout-status" aria-live="polite">After Meta identifies your object, turn it into a sticker. One optional SAM request (~$0.0025).</small>
       </div>
       <div class="budget-status" id="budgetStatus">SESSION SPEND: $0.00 / $1.00 CEILING · CALLS: 0 / 10 · 100% OFFLINE CAPABLE</div>
@@ -49,11 +49,13 @@
         <div id="modal" class="modal" aria-live="polite">
           <div class="ticket">
             <div id="ticketStamp" class="ticket-stamp">✹ INSERT CHAOS ✹</div>
+            <canvas id="reportPortrait" width="300" height="180" aria-label="Your chaos character" hidden></canvas>
             <h1 id="ticketTitle">YOUR STUFF.<br><em>OUR PROBLEM.</em></h1>
             <p id="ticketBody">One everyday object. Three ridiculous games. Zero sense.</p>
+            <div id="reportScore" class="report-score" hidden></div>
             <div id="ticketBadges" class="badges"><span>01 WRECK</span><span>02 ABDUCT</span><span>03 ESCAPE</span></div>
-            <button type="button" id="primaryBtn" class="bigbutton">START THE NONSENSE <span>➜</span></button>
-            <button type="button" id="shareBtn" class="share-btn" hidden>↗ SHARE INCIDENT REPORT</button>
+            <button type="button" id="primaryBtn" class="bigbutton">UNLEASH THE CHAOS <span>➜</span></button>
+            <button type="button" id="shareBtn" class="share-btn" hidden>SHARE CHAOS REPORT</button>
             <p id="ticketSub" class="subnote">Phone-friendly · sound on after first tap</p>
           </div>
         </div>
