@@ -27,6 +27,12 @@ MOCK_MODE=true PORT=3002 npm start
 
 Open Cloud Shell's web preview at port 3002. In mock mode you can exercise the three fixtures at zero API cost; SAM is not available in mock mode.
 
+The original soundtrack starts after your first interaction. The cabinet's
+**MUSIC ON/OFF** button saves your music preference; game effects stay enabled.
+Menus and tickets use the menu arrangement, and gameplay crossfades to the aligned
+main theme. See [soundtrack integration and QA](docs/ost-integration.md) for asset
+provenance, looping details, and mobile preview evidence.
+
 ### Private live test
 
 Keep a real `.env` file outside Git, with the sole secret:

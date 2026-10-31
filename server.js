@@ -28,7 +28,9 @@ const MIME_TYPES = {
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.svg': 'image/svg+xml',
-  '.ico': 'image/x-icon'
+  '.ico': 'image/x-icon',
+  '.ogg': 'audio/ogg',
+  '.m4a': 'audio/mp4'
 };
 
 const FIXTURES_METADATA = [
@@ -93,7 +95,11 @@ function readBody(req, limitBytes = 12 * 1024 * 1024) {
   });
 }
 
-const PUBLIC_FILES = new Set(['index.html', 'styles.css', 'game.js', 'gameplan.js', 'stage_machine.js', 'favicon.ico']);
+const PUBLIC_FILES = new Set([
+  'index.html', 'styles.css', 'game.js', 'gameplan.js', 'stage_machine.js', 'music.js', 'favicon.ico',
+  'public/audio/main-theme-loop.ogg', 'public/audio/main-theme-loop.m4a',
+  'public/audio/menu-mix-loop.ogg', 'public/audio/menu-mix-loop.m4a'
+]);
 
 function serveStatic(req, res, pathname) {
   const relativePath = pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, '');
@@ -118,7 +124,9 @@ function serveStatic(req, res, pathname) {
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
     setSecurityHeaders(res);
     res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Length', stats.size);
     const stream = fs.createReadStream(filePath);
+    stream.on('error', () => res.destroy());
     stream.pipe(res);
   });
 }

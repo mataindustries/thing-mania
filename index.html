@@ -43,6 +43,10 @@
     </div>
 
     <div class="arcade-shell">
+      <div class="music-controls">
+        <button type="button" id="musicToggle" class="music-toggle" aria-pressed="true" aria-describedby="musicStatus">♫ MUSIC ON</button>
+        <span id="musicStatus" class="music-status" role="status">TAP TO START</span>
+      </div>
       <div class="arcade-hardware"><span>● REC</span><span>POCKET MAYHEM SYSTEM™</span><span>LIVE <i></i></span></div>
       <div class="screen-wrap">
         <canvas id="game" width="420" height="640" aria-label="THING MANIA: Three playable arcade microgames. Drag the wrecking ball, tap to beam up the object, and dodge falling hazards." tabindex="0"></canvas>
@@ -71,6 +75,7 @@
   </main>
   <script src="gameplan.js"></script>
   <script src="stage_machine.js"></script>
+  <script src="music.js"></script>
   <script src="game.js" defer></script>
 </body>
 </html>

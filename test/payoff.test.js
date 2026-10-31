@@ -6,7 +6,7 @@ const {createDefaultGamePlan}=require('../gameplan');
 
 // Run the actual browser game logic offline, with a lightweight DOM/Canvas host.
 // Instrument only this test copy; production exposes no debug or spending hooks.
-function arcade(reduced=false){
+function arcade(reduced=false,music=null){
   let now=1000;
   const images=[],labels=[],elements=new Map();
   const context=new Proxy({
@@ -29,7 +29,8 @@ function arcade(reduced=false){
   }
   const sandbox={console,performance:{now:()=>now},URLSearchParams,Math,
     document:{querySelector:element,querySelectorAll:()=>[],createElement:id=>element('new-'+id)},
-    window:{GamePlan:{createDefaultGamePlan},matchMedia:()=>({matches:reduced}),addEventListener(){}},
+    window:{GamePlan:{createDefaultGamePlan},ThingMusic:music?{createMusicController:()=>music}:undefined,
+      matchMedia:()=>({matches:reduced}),addEventListener(){}},
     location:{search:'?seed=7821'},requestAnimationFrame(){},
     fetch:async()=>({json:async()=>({})}),
     navigator:{canShare:()=>false},File:class {},
@@ -55,6 +56,23 @@ test('wreck contact locks input/timer and commits exactly one result after 2.6 s
   a.advance(.7);assert.equal(a.state.scene,'result');assert.equal(a.state.won[0],true);
   const final=a.state.score;a.endRound(true);a.wreckImpact();a.advance(1);
   assert.equal(a.state.score,final);
+});
+
+test('actual game transitions select menu/main music and duck the smash and major victories',()=>{
+  const mixes=[],ducks=[];
+  const a=arcade(false,{setMix:value=>mixes.push(value),duck:duration=>ducks.push(duration)});
+  assert.equal(mixes.at(-1),'menu');
+  a.beginSession();assert.equal(mixes.at(-1),'menu');
+  a.startRound();assert.equal(mixes.at(-1),'main');a.advance(.2);
+  a.wreckImpact();assert.ok(ducks.at(-1)>=2.6);a.advance(2.7);
+  assert.equal(mixes.at(-1),'menu');assert.equal(ducks.at(-1),.65);
+  a.state.round=1;a.startRound();a.advance(.2);a.state.ufo.hits=1;a.state.ufo.phase=0;
+  a.tryBeam();a.advance(1.5);assert.equal(mixes.at(-1),'menu');
+  assert.ok(ducks.some(duration=>duration>=.7&&duration<1));
+  a.state.round=2;a.startRound();a.advance(.2);a.state.elapsed=10;a.update(.01);
+  assert.ok(ducks.at(-1)>1);a.advance(1.1);assert.equal(mixes.at(-1),'menu');
+  a.setModal('summary');assert.equal(mixes.at(-1),'menu');
+  a.element('#demo').handlers.click();assert.equal(mixes.at(-1),'menu');
 });
 
 test('all rounds progress, final beam capture beats timer expiry, lava survival gets an aftermath',()=>{

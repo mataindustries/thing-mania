@@ -66,3 +66,10 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 .badges span small{display:block;margin-top:2px;font:800 7.5px/1.2 monospace;letter-spacing:.02em;color:#6b2c4a;overflow-wrap:anywhere}
 .remix-btn:active{transform:translate(2px,2px) rotate(.6deg);box-shadow:1px 1px 0 #151126}
 .remix-btn:focus-visible{outline:3px solid var(--blue);outline-offset:4px}
+
+/* Cabinet music control stays outside the Canvas and all result tickets. */
+.music-controls{display:flex;align-items:center;gap:10px;padding:0 4px 10px}
+.music-toggle{flex:0 0 auto;min-height:44px;padding:8px 12px;border:2px solid var(--mint);border-radius:7px;background:var(--mint);color:var(--ink);font:900 12px/1.2 monospace}
+.music-toggle[aria-pressed="false"]{background:#1c172d;color:var(--paper);border-color:#a59cb8}
+.music-toggle:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.music-status{font:800 9px/1.4 monospace;letter-spacing:.04em;color:#c8bbd1;overflow-wrap:anywhere}

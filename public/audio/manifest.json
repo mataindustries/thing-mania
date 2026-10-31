@@ -1,0 +1,57 @@
+{
+  "title": "THING//MANIA - Official Soundtrack (final package)",
+  "source": "experiments/thingmania-ost/final/manifest.json",
+  "sourceManifestSha256": "1db6773ca2a76ed94f1c0baba0376bf95d28e7a19d6885bf64a585de9f431bc8",
+  "loop": {
+    "frames": 1596420,
+    "sampleRate": 44100,
+    "seconds": 36.2
+  },
+  "rights": "Every sound is synthesized from scratch by experiments/thingmania-ost/tools/instruments.mjs (deterministic DSP, no randomness beyond seeded generators). No recordings, samples, loops, SoundFonts, General MIDI (FluidR3 GM) or third-party audio are used. All melodies and rhythms were written for THING//MANIA. No license is declared; that remains the owner's decision.",
+  "files": [
+    {
+      "file": "web/main-theme-loop.m4a",
+      "role": "browser listening copy",
+      "deliverable": "main-theme",
+      "bytes": 947714,
+      "sha256": "793e3abe39d156a1ba14f7125bcdc354b966027cc0c062e20ea4f6251f9b41b2",
+      "decodedFrames": 1597440,
+      "exactLength": false,
+      "alignmentLagFrames": 0,
+      "decodedTruePeakDbtp": -1.6
+    },
+    {
+      "file": "web/main-theme-loop.ogg",
+      "role": "browser listening copy",
+      "deliverable": "main-theme",
+      "bytes": 923634,
+      "sha256": "b5ad3acd475992187ffbc099fa157c06a4df8138c9883b62369d4a3789a79763",
+      "decodedFrames": 1596420,
+      "exactLength": true,
+      "alignmentLagFrames": 0,
+      "decodedTruePeakDbtp": -1.3
+    },
+    {
+      "file": "web/menu-mix-loop.m4a",
+      "role": "browser listening copy",
+      "deliverable": "menu-mix",
+      "bytes": 959373,
+      "sha256": "8fd50204463188d2e9fdf12747764e1dedcc2525cb642ea7e46da0600ec677db",
+      "decodedFrames": 1597440,
+      "exactLength": false,
+      "alignmentLagFrames": 0,
+      "decodedTruePeakDbtp": -2.7
+    },
+    {
+      "file": "web/menu-mix-loop.ogg",
+      "role": "browser listening copy",
+      "deliverable": "menu-mix",
+      "bytes": 1011641,
+      "sha256": "f5d506c5a6b4e490d84ad7df91c166e7ca04ae710de7a3eccaaf56b0127c8304",
+      "decodedFrames": 1596420,
+      "exactLength": true,
+      "alignmentLagFrames": 0,
+      "decodedTruePeakDbtp": -2.5
+    }
+  ]
+}

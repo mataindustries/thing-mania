@@ -68,6 +68,10 @@
   const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   let audio = null;
   let audioUnlocked = false;
+  const music = window.ThingMusic?.createMusicController({
+    button: document.querySelector('#musicToggle'),
+    status: document.querySelector('#musicStatus')
+  });
   let modalReadyAt = 0;
   const TAU=Math.PI*2;
   const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
@@ -171,7 +175,7 @@
     if (!audioUnlocked) return;
     try{
       audio ||= new (window.AudioContext||window.webkitAudioContext)();
-      if(audio.state==='suspended') audio.resume();
+      if(audio.state==='suspended') audio.resume().catch(()=>{});
       const o=audio.createOscillator(),g=audio.createGain(),now=audio.currentTime;
       o.type=type;o.frequency.setValueAtTime(hz,now);o.frequency.exponentialRampToValueAtTime(Math.max(30,hz*slide),now+duration);
       g.gain.setValueAtTime(volume,now);g.gain.exponentialRampToValueAtTime(.001,now+duration);
@@ -227,6 +231,7 @@
   function setStatus(text){status.textContent=text;}
 
   function setModal(kind){
+    music?.setMix('menu');
     modal.hidden=false;badges.hidden=true;
     modal.dataset.kind=kind; modalReadyAt=performance.now()+350;
     document.querySelector('#reportPortrait').hidden=kind!=='summary';
@@ -420,6 +425,7 @@
   }
 
   function startRound(){
+    music?.setMix('main');
     if(!reducedMotion)modal.animate?.([{opacity:1},{opacity:0}],{duration:180});
     resetPhysics();state.particles=[];state.texts=[];state.remaining=stages[state.round].seconds;
     state.worlds[state.round]=stageMachine.recipes[GAME_KEYS[state.round]].labels.set;
@@ -434,6 +440,7 @@
     if(state.scene!=='playing')return;
     state.scene='aftermath';state.dragging=false;
     state.aftermath={time:0,duration,win,called:false};
+    if(win)music?.duck(duration+.12);
     setStatus(win?'CHAOS CONFIRMED / ENJOY THE AFTERMATH':'SPECIMEN NEEDS A MOMENT');
     if(state.round===2&&win){burst(state.lava.x,470,'#53e8cb',38,210);tone(660,.5,'triangle',.07,2);}
   }
@@ -442,7 +449,7 @@
     state.won[state.round]=Boolean(win);state.scene='result';state.dragging=false;
     state.score+=win?250+Math.ceil(state.remaining)*12:0;
     setModal('result');setStatus(`ROUND ${state.round+1} ${win?'CLEARED':'FAILED'} · ${state.score} POINTS`);
-    if(win){tone(540,.18,'triangle',.075,1.9);burst(210,260,'#fdf071',28,215);}else tone(170,.45,'sawtooth',.045,.40);
+    if(win){music?.duck(.65);tone(540,.18,'triangle',.075,1.9);burst(210,260,'#fdf071',28,215);}else tone(170,.45,'sawtooth',.045,.40);
   }
 
   // REMIX THE CHAOS: new visual seed, new compatible composition, same plan,
@@ -465,7 +472,7 @@
   primary.addEventListener('click',()=>{
     if(performance.now()<modalReadyAt || state.busy || state.scene==='materializing' || stageMachine.assemble>0)return;
     audioUnlocked=true;
-    try{audio ||= new (window.AudioContext||window.webkitAudioContext)();audio.resume();}catch(e){}
+    try{audio ||= new (window.AudioContext||window.webkitAudioContext)();audio.resume().catch(()=>{});}catch(e){}
     if(state.scene==='menu'||state.scene==='summary'){beginSession();return;}
     if(state.scene==='between'){startRound();return;}
     if(state.scene==='result'){
@@ -610,6 +617,7 @@
       cutoutStatus.textContent = `CHARACTER MATERIALIZED: ${data.concept.toUpperCase()} · SAM 3.1 ${data.cached ? 'CACHED' : 'LIVE'}`;
       cutoutStatus.dataset.state = 'ready';
       state.scene='materializing';state.materialize=0;modal.hidden=true;
+      music?.duck(1.8);
       state.particles=[];burst(210,320,'#53e8cb',45,160);
       tone(440,.7,'triangle',.06,2);
       setStatus('CHARACTER MATERIALIZED / UNLEASH THE CHAOS');
