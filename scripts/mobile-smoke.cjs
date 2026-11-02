@@ -21,15 +21,23 @@ const fs=require('node:fs'), http=require('node:http'), path=require('node:path'
  fs.mkdirSync('docs/screenshots',{recursive:true});
  await page.screenshot({path:'docs/screenshots/mobile-menu.png',fullPage:true});
  await page.locator('#primaryBtn').click();
- await page.waitForTimeout(1500);
- await page.locator('#game').screenshot({path:'docs/screenshots/wreck.png'});
- await page.waitForFunction(()=>document.querySelector('#musicToggle').dataset.state==='playing',{timeout:20000});
  for(let i=0;i<3;i++){
-  await page.waitForFunction(()=>!document.querySelector('#modal').hidden,{timeout:25000});
-  await page.locator('#modal').screenshot({path:`docs/screenshots/ticket-${i+1}.png`});
+  await page.waitForFunction(()=>!document.querySelector('#modal').hidden && document.querySelector('#modal').dataset.kind==='round');
+  await page.waitForTimeout(700);
+  if(i===0){
+   await page.locator('#remixBtn').click();
+   await page.waitForFunction(()=>!document.querySelector('#modal').hidden);
+   await page.waitForTimeout(700);
+  }
+  await page.locator('#primaryBtn').click();
+  await page.waitForTimeout(1500);
+  await page.locator('#game').screenshot({path:`docs/screenshots/game-${i+1}.png`});
+  await page.waitForFunction(()=>!document.querySelector('#modal').hidden && document.querySelector('#modal').dataset.kind==='result');
+  await page.waitForTimeout(700);
   await page.locator('#primaryBtn').click();
  }
- await page.waitForFunction(()=>!document.querySelector('#shareBtn').hidden,{timeout:25000});
+ await page.waitForFunction(()=>!document.querySelector('#shareBtn').hidden);
+ await page.waitForFunction(()=>document.querySelector('#musicToggle').dataset.state==='playing');
  await page.locator('#modal').screenshot({path:'docs/screenshots/chaos-report.png'});
  await page.locator('#shareBtn').click();
  await page.locator('#musicToggle').click();

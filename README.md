@@ -1,5 +1,9 @@
 # THING//MANIA — Hackathon release
 
+Play: **https://thing-mania.pages.dev/** — verified public offline demo.
+
+[Release validation and gameplay screenshots](docs/RELEASE_VALIDATION.md).
+
 Public release: zero-cost static arcade with six environments, offline fixtures,
 original DaemonV12 OST, stage remixes and Chaos Report. No public live inference.
 
