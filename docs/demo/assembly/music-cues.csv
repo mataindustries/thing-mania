@@ -1,0 +1,12 @@
+reel_time_seconds,source_time_seconds,cue,measurement_or_basis,edit_action
+0.000,1.960,Opening pickup,Original main-theme-loop.ogg start offset,Start one OST layer at -6.02 dB gain
+0.300,2.260,WRECK contact accent,Strong rising RMS at 2.26 s in 20ms analysis; manifest aftermath begins source frame 80 while reel begins frame 71,Picture impact nominally aligned within a 30fps frame; not sample-accurate
+2.560,4.520,Phrase accent candidate,Measured rising RMS near 4.52 s; approximately 106.0773 BPM bar grid,Opus may use for a future cut; proof reel preserves full ghosts
+4.820,6.780,Transition candidate,Measured rising RMS at 6.78 s,Near end of first WRECK shot; no claim of exact beat cut
+15.040,17.000,Brief breakdown opportunity,Lowest measured 0.5s RMS window 17.0-17.5 s,Space for BEAM callout or short VO; no extra audio layer added
+18.400,20.360,Strong phrase accent,Measured rising RMS 20.36 s,Useful later cut marker
+21.100,23.060,Strong accent,Highest rising RMS candidate 23.06 s,Useful action sync candidate for Opus
+34.240,36.200,Loop boundary,Exact source manifest length 1596420 frames at 44100 Hz,Continue same approved loop at source zero with 15ms de-click fades
+46.633333,30.200,End-card tail edit,Jump to original final six seconds of same loop,15ms de-click at splice; no synthesized chord or external ding
+51.433333,35.000,Closing fade,Original loop tail; no resolved demo-mix ending present,Fade to silence for 1.2 seconds
+52.633333,36.200,End,End of tail and picture,No claim of natural resolved closing chord

@@ -1,0 +1,11 @@
+{
+  "analysis_rate_hz": 8000,
+  "search_resolution_seconds": 0.0005,
+  "decoded_reference_source_start": 1.96,
+  "correlation": 0.9914898553961643,
+  "measured_audio_delay_seconds": 0.007,
+  "picture_contact_seconds": 0.3,
+  "reference_accent_seconds": 2.26,
+  "estimated_encoded_accent_reel_seconds": 0.307,
+  "result": "Within one 30fps frame; coarse correlation, NOT sample-accurate synchronization"
+}
