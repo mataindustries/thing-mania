@@ -1,0 +1,67 @@
+[
+  {
+    "file": "graphics/01-meta-to-play.png",
+    "sha256": "e4d89f7d1b6d438564d824e3619433c22ae16117d42be4d1869ddbe0d867a376",
+    "provenance": "Source-authored explanatory graphic/fixture excerpt, not live model evidence"
+  },
+  {
+    "file": "graphics/01-meta-to-play.svg",
+    "sha256": "2be6f69ff68fc1b62a226088e56dc2029e2ba2a4b30e461fb485803994e634a7",
+    "provenance": "Source-authored explanatory graphic/fixture excerpt, not live model evidence"
+  },
+  {
+    "file": "graphics/02-remix-without-inference.png",
+    "sha256": "764b62cf9545760637205938f12d62b96c5d98aa1c57ee7278c4b688f42c4068",
+    "provenance": "Source-authored explanatory graphic/fixture excerpt, not live model evidence"
+  },
+  {
+    "file": "graphics/02-remix-without-inference.svg",
+    "sha256": "9fb9d7fa365aabfd15d229f1f5f428de0a6ad8cf2bb64275ee720b41b04437b1",
+    "provenance": "Source-authored explanatory graphic/fixture excerpt, not live model evidence"
+  },
+  {
+    "file": "graphics/gameplan-excerpt.json",
+    "sha256": "57166fcdeca341e5feac295ff16ea0987a8ed910dfc1f9bde2fb96c73e57fa1d",
+    "provenance": "Source-authored explanatory graphic/fixture excerpt, not live model evidence"
+  },
+  {
+    "file": "graphics/provenance-overlay.png",
+    "sha256": "777a38d597003417357bfcca8dc30b654054d7c97ecc968b1ae274e0b11c2790",
+    "provenance": "Source-authored explanatory graphic/fixture excerpt, not live model evidence"
+  },
+  {
+    "file": "graphics/provenance-overlay.svg",
+    "sha256": "2d28a9377e9178f149c79deddc4253f8a69014da41f51b8459c7e10d72527ad8",
+    "provenance": "Source-authored explanatory graphic/fixture excerpt, not live model evidence"
+  },
+  {
+    "file": "graphics/stagerecipe-excerpt.json",
+    "sha256": "410a54feb73ea102584999b46f003ab83f958ef0ecef9ae906084cf6949fa8f7",
+    "provenance": "Source-authored explanatory graphic/fixture excerpt, not live model evidence"
+  },
+  {
+    "file": "../screenshots/mobile-menu.png",
+    "sha256": "f1dd23998139b2d2924670d5b39f3c1c380c15a8c86c91a0cc8036e2c09417ca",
+    "provenance": "Existing verified public offline release screenshot; see docs/RELEASE_VALIDATION.md"
+  },
+  {
+    "file": "../screenshots/game-1.png",
+    "sha256": "ddd8bdc419aa53643f212c841ff7c25b38ef2a924b6c059e0d1ac60652669332",
+    "provenance": "Existing verified public offline release screenshot; see docs/RELEASE_VALIDATION.md"
+  },
+  {
+    "file": "../screenshots/game-2.png",
+    "sha256": "0403bafccb3117e0c422f627f9d837d645c01b4958b8872443ee3280463aa9e2",
+    "provenance": "Existing verified public offline release screenshot; see docs/RELEASE_VALIDATION.md"
+  },
+  {
+    "file": "../screenshots/game-3.png",
+    "sha256": "ad474b1c62e0885946f7e761ad3c6afb57d16cfecdad372bb0c14cc7b6be1f8a",
+    "provenance": "Existing verified public offline release screenshot; see docs/RELEASE_VALIDATION.md"
+  },
+  {
+    "file": "../screenshots/chaos-report.png",
+    "sha256": "6db961a416e5ecaa830d42f1f7978f39a26eaad800f2cfea6822639f17693cfd",
+    "provenance": "Existing verified public offline release screenshot; see docs/RELEASE_VALIDATION.md"
+  }
+]

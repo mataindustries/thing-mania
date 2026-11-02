@@ -1,0 +1,32 @@
+{
+  "url": "https://thing-mania.pages.dev/",
+  "checked_utc": "2026-11-02",
+  "note": "Public CSS has the release builder consent-hidden rule appended; gameplay JS matches exactly. Local harness has separate editorial framing and instrumentation.",
+  "files": {
+    "game.js": {
+      "public_sha256": "097af1796191ebb17cb297c77fce70fb875d84824d817fc9cfba76b97e664a09",
+      "local_sha256": "097af1796191ebb17cb297c77fce70fb875d84824d817fc9cfba76b97e664a09",
+      "matches": true
+    },
+    "gameplan.js": {
+      "public_sha256": "fac06b0347c143f183aec865bb2a0f4babbd3c52d7d7151d4843732989bab881",
+      "local_sha256": "fac06b0347c143f183aec865bb2a0f4babbd3c52d7d7151d4843732989bab881",
+      "matches": true
+    },
+    "stage_machine.js": {
+      "public_sha256": "70b88e83b7ef12ddec0f69678460844157dd4942f41b44833a00d506a6459ffb",
+      "local_sha256": "70b88e83b7ef12ddec0f69678460844157dd4942f41b44833a00d506a6459ffb",
+      "matches": true
+    },
+    "music.js": {
+      "public_sha256": "a13cd9097d27f805d61be457e48637e3fa13343e7b68cef384e6bcd95c856548",
+      "local_sha256": "a13cd9097d27f805d61be457e48637e3fa13343e7b68cef384e6bcd95c856548",
+      "matches": true
+    },
+    "styles.css": {
+      "public_sha256": "49baee0681caab2c3a183f595f54dac744f889cb4fb7c3e48516ca00a23b40ef",
+      "local_sha256": "c0dbebce2ae749f5b2429d0bfb508b7f59168d3bce0b47cf12417e6c01845fcc",
+      "matches": true
+    }
+  }
+}

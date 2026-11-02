@@ -1,0 +1,3 @@
+# Keep private owner footage out of Git. Metadata is local until reviewed.
+*
+!.gitignore

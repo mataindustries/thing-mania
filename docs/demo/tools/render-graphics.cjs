@@ -1,0 +1,3 @@
+const path=require('node:path'),fs=require('node:fs');
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+(async()=>{const browser=await chromium.launch({headless:true});try{const page=await browser.newPage({viewport:{width:1920,height:1080},deviceScaleFactor:1});for(const name of ['01-meta-to-play','02-remix-without-inference','provenance-overlay']){const file=path.resolve(__dirname,'../graphics',name);if(fs.existsSync(file+'.png'))continue;await page.goto('file://'+file+'.svg');await page.screenshot({path:file+'.png',omitBackground:true});}}finally{await browser.close();}})().catch(e=>{console.error(e);process.exit(1);});

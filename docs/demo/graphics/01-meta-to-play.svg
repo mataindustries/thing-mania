@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<rect width="1920" height="1080" fill="#100d18"/>
+<defs><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12" fill="#53e8cb"/></marker></defs>
+<text x="90" y="105" font-family="Arial,sans-serif" font-size="64" fill="#fdf071">META DIRECTS THE CHARACTER</text>
+<text x="90" y="170" font-family="Arial,sans-serif" font-size="28" fill="#fff3c5">Private live pipeline · server-held credentials · distinct consented actions</text>
+<rect x="90" y="250" width="470" height="220" rx="18" fill="#272138" stroke="#53e8cb" stroke-width="3"/>
+<text x="114" y="300" font-family="Arial,sans-serif" font-size="34" fill="#53e8cb">Muse Spark 1.3</text>
+<text x="114" y="348" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Consented photo → object + role</text>
+<text x="114" y="390" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Dialogue + bounded game tuning</text>
+<text x="114" y="432" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Private Node Meta adapter</text>
+<rect x="680" y="250" width="510" height="220" rx="18" fill="#272138" stroke="#53e8cb" stroke-width="3"/>
+<text x="704" y="300" font-family="Arial,sans-serif" font-size="34" fill="#53e8cb">Validated GamePlan</text>
+<text x="704" y="348" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Schema + bounds + safe defaults</text>
+<text x="704" y="390" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">gameplan.js → browser arcade</text>
+<text x="704" y="432" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Fallback keeps play available</text>
+<rect x="1310" y="250" width="510" height="220" rx="18" fill="#272138" stroke="#53e8cb" stroke-width="3"/>
+<text x="1334" y="300" font-family="Arial,sans-serif" font-size="34" fill="#53e8cb">Stage Machine</text>
+<text x="1334" y="348" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Allowlisted StageRecipe data</text>
+<text x="1334" y="390" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Atmosphere / set / props / fx</text>
+<text x="1334" y="432" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Seeded local composition</text>
+<rect x="90" y="590" width="470" height="220" rx="18" fill="#272138" stroke="#53e8cb" stroke-width="3"/>
+<text x="114" y="640" font-family="Arial,sans-serif" font-size="34" fill="#53e8cb">SAM 3.1 · separate opt-in</text>
+<text x="114" y="688" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Photo + identified noun phrase</text>
+<text x="114" y="730" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Mask geometry → browser cutout</text>
+<text x="114" y="772" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Failure retains photo sprite</text>
+<rect x="680" y="590" width="510" height="220" rx="18" fill="#272138" stroke="#53e8cb" stroke-width="3"/>
+<text x="704" y="640" font-family="Arial,sans-serif" font-size="34" fill="#53e8cb">Canvas arcade</text>
+<text x="704" y="688" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">WRECK / BEAM / DODGE</text>
+<text x="704" y="730" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Photo or cutout used in play</text>
+<text x="704" y="772" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Original DaemonV12 soundtrack</text>
+<rect x="1310" y="590" width="510" height="220" rx="18" fill="#272138" stroke="#53e8cb" stroke-width="3"/>
+<text x="1334" y="640" font-family="Arial,sans-serif" font-size="34" fill="#53e8cb">Chaos Report</text>
+<text x="1334" y="688" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Actual score + played worlds</text>
+<text x="1334" y="730" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Local Canvas PNG export</text>
+<text x="1334" y="772" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Native share or download</text>
+<path d="M565 350 L665 350" stroke="#53e8cb" stroke-width="4" marker-end="url(#a)"/>
+<path d="M1195 350 L1295 350" stroke="#53e8cb" stroke-width="4" marker-end="url(#a)"/>
+<path d="M1565 475 L1195 610" stroke="#53e8cb" stroke-width="4" marker-end="url(#a)"/>
+<path d="M565 700 L665 700" stroke="#53e8cb" stroke-width="4" marker-end="url(#a)"/>
+<path d="M1195 700 L1295 700" stroke="#53e8cb" stroke-width="4" marker-end="url(#a)"/>
+<text x="90" y="950" font-family="Arial,sans-serif" font-size="28" fill="#c3b5d4">Public Pages demo uses offline JSON fixtures; no public live inference endpoint.</text>
+<text x="90" y="992" font-family="Arial,sans-serif" font-size="28" fill="#c3b5d4">Sources: meta_adapter.js · sam_adapter.js · gameplan.js · stage_machine.js · game.js</text>
+</svg>

@@ -1,0 +1,27 @@
+{
+  "source": "stage_machine.js composeStage(validated toy_car fixture, wreck remix=1); actual locally computed recipe",
+  "recipe": {
+    "version": "2.0.0",
+    "game": "wreck",
+    "remix": 1,
+    "seed": 144860545,
+    "tags": [
+      "roadside",
+      "industrial",
+      "fiery"
+    ],
+    "atmosphere": "toxic_moon",
+    "set": "haunted_house",
+    "props": "pumpkin_patch",
+    "fx": "fog_bats",
+    "title": "THE HAUNTED HOUSE",
+    "noun": "THE HOUSE",
+    "labels": {
+      "atmosphere": "TOXIC MOON",
+      "set": "HAUNTED HOUSE",
+      "props": "PUMPKIN PATCH",
+      "fx": "FOG + BATS"
+    },
+    "signature": "haunted_house/toxic_moon/pumpkin_patch/fog_bats"
+  }
+}

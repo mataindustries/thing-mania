@@ -1,0 +1,41 @@
+source,fps,total_frames,duration_seconds,source_timecode,event,provenance,sha256
+captures/1-wreck-haunted_house.mp4,30,223,7.433333,00:00:00:00,between,actual offline fixture; fixed-step browser capture,cc93dcca4f2f1e217cd37a7befb7fc7ccbf0ca762bdfac95e70f4ef34eb4f78f
+captures/1-wreck-haunted_house.mp4,30,223,7.433333,00:00:02:06,entering,actual offline fixture; fixed-step browser capture,cc93dcca4f2f1e217cd37a7befb7fc7ccbf0ca762bdfac95e70f4ef34eb4f78f
+captures/1-wreck-haunted_house.mp4,30,223,7.433333,00:00:02:11,playing,actual offline fixture; fixed-step browser capture,cc93dcca4f2f1e217cd37a7befb7fc7ccbf0ca762bdfac95e70f4ef34eb4f78f
+captures/1-wreck-haunted_house.mp4,30,223,7.433333,00:00:02:11,pointer drag/release,actual offline fixture; fixed-step browser capture,cc93dcca4f2f1e217cd37a7befb7fc7ccbf0ca762bdfac95e70f4ef34eb4f78f
+captures/1-wreck-haunted_house.mp4,30,223,7.433333,00:00:02:20,aftermath,actual offline fixture; fixed-step browser capture,cc93dcca4f2f1e217cd37a7befb7fc7ccbf0ca762bdfac95e70f4ef34eb4f78f
+captures/1-wreck-haunted_house.mp4,30,223,7.433333,00:00:05:09,result,actual offline fixture; fixed-step browser capture,cc93dcca4f2f1e217cd37a7befb7fc7ccbf0ca762bdfac95e70f4ef34eb4f78f
+captures/1-wreck-haunted_house.mp4,30,223,7.433333,00:00:07:13,END (exclusive),actual offline fixture; fixed-step browser capture,cc93dcca4f2f1e217cd37a7befb7fc7ccbf0ca762bdfac95e70f4ef34eb4f78f
+captures/1-beam-alien_drive_through.mp4,30,213,7.100000,00:00:00:00,between,actual offline fixture; fixed-step browser capture,64ee3afaf66693f8036d101cb6b946ef5a8be5a3076b2120aaa208f72d21f001
+captures/1-beam-alien_drive_through.mp4,30,213,7.100000,00:00:02:06,entering,actual offline fixture; fixed-step browser capture,64ee3afaf66693f8036d101cb6b946ef5a8be5a3076b2120aaa208f72d21f001
+captures/1-beam-alien_drive_through.mp4,30,213,7.100000,00:00:02:11,playing,actual offline fixture; fixed-step browser capture,64ee3afaf66693f8036d101cb6b946ef5a8be5a3076b2120aaa208f72d21f001
+captures/1-beam-alien_drive_through.mp4,30,213,7.100000,00:00:04:09,aftermath,actual offline fixture; fixed-step browser capture,64ee3afaf66693f8036d101cb6b946ef5a8be5a3076b2120aaa208f72d21f001
+captures/1-beam-alien_drive_through.mp4,30,213,7.100000,00:00:04:29,result,actual offline fixture; fixed-step browser capture,64ee3afaf66693f8036d101cb6b946ef5a8be5a3076b2120aaa208f72d21f001
+captures/1-beam-alien_drive_through.mp4,30,213,7.100000,00:00:07:03,END (exclusive),actual offline fixture; fixed-step browser capture,64ee3afaf66693f8036d101cb6b946ef5a8be5a3076b2120aaa208f72d21f001
+captures/1-dodge-volcano.mp4,30,503,16.766667,00:00:00:00,between,actual offline fixture; fixed-step browser capture,401e7b6218c00aee9f15aaeca3f629dfd3cbbefb27b79151fd7754807c27e021
+captures/1-dodge-volcano.mp4,30,503,16.766667,00:00:02:06,entering,actual offline fixture; fixed-step browser capture,401e7b6218c00aee9f15aaeca3f629dfd3cbbefb27b79151fd7754807c27e021
+captures/1-dodge-volcano.mp4,30,503,16.766667,00:00:02:11,playing,actual offline fixture; fixed-step browser capture,401e7b6218c00aee9f15aaeca3f629dfd3cbbefb27b79151fd7754807c27e021
+captures/1-dodge-volcano.mp4,30,503,16.766667,00:00:11:12,aftermath,actual offline fixture; fixed-step browser capture,401e7b6218c00aee9f15aaeca3f629dfd3cbbefb27b79151fd7754807c27e021
+captures/1-dodge-volcano.mp4,30,503,16.766667,00:00:12:14,result,actual offline fixture; fixed-step browser capture,401e7b6218c00aee9f15aaeca3f629dfd3cbbefb27b79151fd7754807c27e021
+captures/1-dodge-volcano.mp4,30,503,16.766667,00:00:14:19,summary,actual offline fixture; fixed-step browser capture,401e7b6218c00aee9f15aaeca3f629dfd3cbbefb27b79151fd7754807c27e021
+captures/1-dodge-volcano.mp4,30,503,16.766667,00:00:16:23,END (exclusive),actual offline fixture; fixed-step browser capture,401e7b6218c00aee9f15aaeca3f629dfd3cbbefb27b79151fd7754807c27e021
+captures/2-wreck-cursed_diner.mp4,30,223,7.433333,00:00:00:00,between,actual offline fixture; fixed-step browser capture,6c1072404d301e194a0650e416ee8388c1f9805cc8e4a544081f92d71b97a541
+captures/2-wreck-cursed_diner.mp4,30,223,7.433333,00:00:02:06,entering,actual offline fixture; fixed-step browser capture,6c1072404d301e194a0650e416ee8388c1f9805cc8e4a544081f92d71b97a541
+captures/2-wreck-cursed_diner.mp4,30,223,7.433333,00:00:02:11,playing,actual offline fixture; fixed-step browser capture,6c1072404d301e194a0650e416ee8388c1f9805cc8e4a544081f92d71b97a541
+captures/2-wreck-cursed_diner.mp4,30,223,7.433333,00:00:02:11,pointer drag/release,actual offline fixture; fixed-step browser capture,6c1072404d301e194a0650e416ee8388c1f9805cc8e4a544081f92d71b97a541
+captures/2-wreck-cursed_diner.mp4,30,223,7.433333,00:00:02:20,aftermath,actual offline fixture; fixed-step browser capture,6c1072404d301e194a0650e416ee8388c1f9805cc8e4a544081f92d71b97a541
+captures/2-wreck-cursed_diner.mp4,30,223,7.433333,00:00:05:09,result,actual offline fixture; fixed-step browser capture,6c1072404d301e194a0650e416ee8388c1f9805cc8e4a544081f92d71b97a541
+captures/2-wreck-cursed_diner.mp4,30,223,7.433333,00:00:07:13,END (exclusive),actual offline fixture; fixed-step browser capture,6c1072404d301e194a0650e416ee8388c1f9805cc8e4a544081f92d71b97a541
+captures/2-beam-night_farm.mp4,30,213,7.100000,00:00:00:00,between,actual offline fixture; fixed-step browser capture,4f34539fd1ecf8ec978f9a9ff1c535680f0240f0bd7ba80b6db4ef3f0f3835c9
+captures/2-beam-night_farm.mp4,30,213,7.100000,00:00:02:06,entering,actual offline fixture; fixed-step browser capture,4f34539fd1ecf8ec978f9a9ff1c535680f0240f0bd7ba80b6db4ef3f0f3835c9
+captures/2-beam-night_farm.mp4,30,213,7.100000,00:00:02:11,playing,actual offline fixture; fixed-step browser capture,4f34539fd1ecf8ec978f9a9ff1c535680f0240f0bd7ba80b6db4ef3f0f3835c9
+captures/2-beam-night_farm.mp4,30,213,7.100000,00:00:04:09,aftermath,actual offline fixture; fixed-step browser capture,4f34539fd1ecf8ec978f9a9ff1c535680f0240f0bd7ba80b6db4ef3f0f3835c9
+captures/2-beam-night_farm.mp4,30,213,7.100000,00:00:04:29,result,actual offline fixture; fixed-step browser capture,4f34539fd1ecf8ec978f9a9ff1c535680f0240f0bd7ba80b6db4ef3f0f3835c9
+captures/2-beam-night_farm.mp4,30,213,7.100000,00:00:07:03,END (exclusive),actual offline fixture; fixed-step browser capture,4f34539fd1ecf8ec978f9a9ff1c535680f0240f0bd7ba80b6db4ef3f0f3835c9
+captures/2-dodge-industrial_meltdown.mp4,30,503,16.766667,00:00:00:00,between,actual offline fixture; fixed-step browser capture,cf5c09af7d5d5f5e2b318ec31cf3d57af07abb0f8ecec593a5d1e714ddc0d70b
+captures/2-dodge-industrial_meltdown.mp4,30,503,16.766667,00:00:02:06,entering,actual offline fixture; fixed-step browser capture,cf5c09af7d5d5f5e2b318ec31cf3d57af07abb0f8ecec593a5d1e714ddc0d70b
+captures/2-dodge-industrial_meltdown.mp4,30,503,16.766667,00:00:02:11,playing,actual offline fixture; fixed-step browser capture,cf5c09af7d5d5f5e2b318ec31cf3d57af07abb0f8ecec593a5d1e714ddc0d70b
+captures/2-dodge-industrial_meltdown.mp4,30,503,16.766667,00:00:11:12,aftermath,actual offline fixture; fixed-step browser capture,cf5c09af7d5d5f5e2b318ec31cf3d57af07abb0f8ecec593a5d1e714ddc0d70b
+captures/2-dodge-industrial_meltdown.mp4,30,503,16.766667,00:00:12:14,result,actual offline fixture; fixed-step browser capture,cf5c09af7d5d5f5e2b318ec31cf3d57af07abb0f8ecec593a5d1e714ddc0d70b
+captures/2-dodge-industrial_meltdown.mp4,30,503,16.766667,00:00:14:19,summary,actual offline fixture; fixed-step browser capture,cf5c09af7d5d5f5e2b318ec31cf3d57af07abb0f8ecec593a5d1e714ddc0d70b
+captures/2-dodge-industrial_meltdown.mp4,30,503,16.766667,00:00:16:23,END (exclusive),actual offline fixture; fixed-step browser capture,cf5c09af7d5d5f5e2b318ec31cf3d57af07abb0f8ecec593a5d1e714ddc0d70b

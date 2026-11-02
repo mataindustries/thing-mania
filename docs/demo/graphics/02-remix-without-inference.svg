@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<rect width="1920" height="1080" fill="#100d18"/>
+<defs><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12" fill="#53e8cb"/></marker></defs>
+<text x="90" y="105" font-family="Arial,sans-serif" font-size="64" fill="#fdf071">SAME CHARACTER. NEW WORLD.</text>
+<text x="90" y="170" font-family="Arial,sans-serif" font-size="28" fill="#fff3c5">Stage Machine is deterministic local code · remixes make zero model calls</text>
+<rect x="90" y="270" width="490" height="470" rx="18" fill="#272138" stroke="#53e8cb" stroke-width="3"/>
+<text x="114" y="320" font-family="Arial,sans-serif" font-size="34" fill="#53e8cb">Validated GamePlan</text>
+<text x="114" y="368" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Object + whimsical role</text>
+<text x="114" y="410" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Derived tags and plan seed</text>
+<text x="114" y="452" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Remix index</text>
+<text x="114" y="494" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">No new photo upload</text>
+<rect x="710" y="270" width="500" height="470" rx="18" fill="#272138" stroke="#53e8cb" stroke-width="3"/>
+<text x="734" y="320" font-family="Arial,sans-serif" font-size="34" fill="#53e8cb">StageRecipe</text>
+<text x="734" y="368" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Choose compatible modules</text>
+<text x="734" y="410" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Atmosphere → set → props → fx</text>
+<text x="734" y="452" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Haunted House / Cursed Diner</text>
+<text x="734" y="494" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Night Farm / Alien Drive-Through</text>
+<text x="734" y="536" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Volcano / Industrial Meltdown</text>
+<rect x="1340" y="270" width="490" height="470" rx="18" fill="#272138" stroke="#53e8cb" stroke-width="3"/>
+<text x="1364" y="320" font-family="Arial,sans-serif" font-size="34" fill="#53e8cb">Canvas assembly</text>
+<text x="1364" y="368" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Existing painted modules</text>
+<text x="1364" y="410" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">1.4 s normal-motion assembly</text>
+<text x="1364" y="452" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Same mechanics + hitboxes</text>
+<text x="1364" y="494" font-family="Arial,sans-serif" font-size="27" fill="#fff3c5">Local Chaos Report</text>
+<path d="M585 505 L695 505" stroke="#53e8cb" stroke-width="4" marker-end="url(#a)"/>
+<path d="M1215 505 L1325 505" stroke="#53e8cb" stroke-width="4" marker-end="url(#a)"/>
+<text x="90" y="950" font-family="Arial,sans-serif" font-size="28" fill="#c3b5d4">Not a new generated minigame; six existing environment sets across three games.</text>
+<text x="90" y="992" font-family="Arial,sans-serif" font-size="28" fill="#c3b5d4">Sources: stage_machine.js composeStage / validateRecipe · game.js drawAssembly / remixStage</text>
+</svg>

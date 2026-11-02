@@ -1,0 +1,12 @@
+record_in,record_out,frames_30fps,purpose,source,status
+00:00:00:00,00:00:08:00,240,Hook,"Owner object + captures/*wreck*.mp4 impact mark",OWNER OBJECT PENDING
+00:00:08:00,00:00:20:00,360,Invitation,"android/ owner phone gallery recording",OWNER FOOTAGE PENDING
+00:00:20:00,00:00:36:00,480,Real AI reveal,"android/ private live consent Muse + SAM",OWNER LIVE FOOTAGE PENDING
+00:00:36:00,00:01:02:00,780,WRECK payoff,"captures/1-wreck-haunted_house.mp4 + captures/2-wreck-cursed_diner.mp4; hold tickets or intercut owner play",OFFLINE CAPTURES
+00:01:02:00,00:01:21:00,570,Remix innovation,"WRECK clips assembly at head; graphics/02-remix-without-inference.svg; recipe excerpt",OFFLINE CAPTURES + GRAPHIC
+00:01:21:00,00:01:43:00,660,BEAM worlds,"captures/*beam*.mp4; both catch marks and victory tickets",OFFLINE CAPTURES
+00:01:43:00,00:02:04:00,630,DODGE worlds,"captures/*dodge*.mp4; hazards and survival marks",OFFLINE CAPTURES
+00:02:04:00,00:02:25:00,630,Architecture,"graphics/01-meta-to-play.svg + graphics/02-remix-without-inference.svg",SOURCE GRAPHICS
+00:02:25:00,00:02:41:00,480,Report and sharing,"DODGE clip summary tails + owner native share + existing report screenshot",OWNER SHARE PENDING
+00:02:41:00,00:02:47:00,180,Working proof reprise,"Best actual six-world gameplay moments; roadmap teaser omitted",OFFLINE CAPTURES
+00:02:47:00,00:03:00:00,390,Finish,"Actual gameplay reprise + title URL and model credits; last 60 frames static",EDITOR ASSEMBLY

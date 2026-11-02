@@ -1,0 +1,814 @@
+{
+  "sourceCommit": "da7163da40d73cdea469bd40763851e4f6ccb8c9",
+  "assets": {
+    "game.js": "097af1796191ebb17cb297c77fce70fb875d84824d817fc9cfba76b97e664a09",
+    "gameplan.js": "fac06b0347c143f183aec865bb2a0f4babbd3c52d7d7151d4843732989bab881",
+    "stage_machine.js": "70b88e83b7ef12ddec0f69678460844157dd4942f41b44833a00d506a6459ffb",
+    "music.js": "a13cd9097d27f805d61be457e48637e3fa13343e7b68cef384e6bcd95c856548",
+    "index.html": "e7b7269e7a704e8a2cc9b999cb092258bfd3e9a42ab61cee59933280d3d0b618",
+    "styles.css": "c0dbebce2ae749f5b2429d0bfb508b7f59168d3bce0b47cf12417e6c01845fcc",
+    "fixtures/toy_car.json": "7f9b38a1418ff569497e4d1275ff3df0007f38ad0daae7fb0e8103bac216699e"
+  },
+  "viewport": [
+    390,
+    844
+  ],
+  "master": [
+    1920,
+    1080
+  ],
+  "fps": 30,
+  "seed": 7821,
+  "audio": "SILENT: use approved OST separately; no browser audio recorded",
+  "instrumentation": "Local-only read snapshot and update/draw at fixed 1/30 s; no state setters; original pointer and button handlers",
+  "clips": [
+    {
+      "file": "captures/1-wreck-haunted_house.mp4",
+      "world": "haunted_house",
+      "game": "wreck",
+      "session": 0,
+      "frames": 223,
+      "duration": 7.433333333333334,
+      "marks": [
+        {
+          "frame": 0,
+          "time": 0,
+          "event": "between"
+        },
+        {
+          "frame": 66,
+          "time": 2.2,
+          "event": "entering"
+        },
+        {
+          "frame": 71,
+          "time": 2.3666666666666667,
+          "event": "playing"
+        },
+        {
+          "frame": 71,
+          "time": 2.3666666666666667,
+          "event": "pointer drag/release"
+        },
+        {
+          "frame": 80,
+          "time": 2.6666666666666665,
+          "event": "aftermath"
+        },
+        {
+          "frame": 159,
+          "time": 5.3,
+          "event": "result"
+        }
+      ],
+      "won": [
+        true,
+        null,
+        null
+      ],
+      "sha256": "cc93dcca4f2f1e217cd37a7befb7fc7ccbf0ca762bdfac95e70f4ef34eb4f78f",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 114176,
+            "duration": "7.433333",
+            "bit_rate": "886401",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "223",
+            "extradata_size": 50,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc60.31.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspaces/thing-mania/docs/demo/captures/1-wreck-haunted_house.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "7.433333",
+          "size": "827098",
+          "bit_rate": "890150",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf60.16.100"
+          }
+        }
+      }
+    },
+    {
+      "file": "captures/1-beam-alien_drive_through.mp4",
+      "world": "alien_drive_through",
+      "game": "beam",
+      "session": 0,
+      "frames": 213,
+      "duration": 7.1,
+      "marks": [
+        {
+          "frame": 0,
+          "time": 0,
+          "event": "between"
+        },
+        {
+          "frame": 66,
+          "time": 2.2,
+          "event": "entering"
+        },
+        {
+          "frame": 71,
+          "time": 2.3666666666666667,
+          "event": "playing"
+        },
+        {
+          "frame": 129,
+          "time": 4.3,
+          "event": "aftermath"
+        },
+        {
+          "frame": 149,
+          "time": 4.966666666666667,
+          "event": "result"
+        }
+      ],
+      "won": [
+        true,
+        true,
+        null
+      ],
+      "sha256": "64ee3afaf66693f8036d101cb6b946ef5a8be5a3076b2120aaa208f72d21f001",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 109056,
+            "duration": "7.100000",
+            "bit_rate": "974687",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "213",
+            "extradata_size": 50,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc60.31.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspaces/thing-mania/docs/demo/captures/1-beam-alien_drive_through.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "7.100000",
+          "size": "868382",
+          "bit_rate": "978458",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf60.16.100"
+          }
+        }
+      }
+    },
+    {
+      "file": "captures/1-dodge-volcano.mp4",
+      "world": "volcano",
+      "game": "dodge",
+      "session": 0,
+      "frames": 503,
+      "duration": 16.766666666666666,
+      "marks": [
+        {
+          "frame": 0,
+          "time": 0,
+          "event": "between"
+        },
+        {
+          "frame": 66,
+          "time": 2.2,
+          "event": "entering"
+        },
+        {
+          "frame": 71,
+          "time": 2.3666666666666667,
+          "event": "playing"
+        },
+        {
+          "frame": 342,
+          "time": 11.4,
+          "event": "aftermath"
+        },
+        {
+          "frame": 374,
+          "time": 12.466666666666667,
+          "event": "result"
+        },
+        {
+          "frame": 439,
+          "time": 14.633333333333333,
+          "event": "summary"
+        }
+      ],
+      "won": [
+        true,
+        true,
+        true
+      ],
+      "sha256": "401e7b6218c00aee9f15aaeca3f629dfd3cbbefb27b79151fd7754807c27e021",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 257536,
+            "duration": "16.766667",
+            "bit_rate": "803405",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "503",
+            "extradata_size": 50,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc60.31.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspaces/thing-mania/docs/demo/captures/1-dodge-volcano.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "16.766667",
+          "size": "1690630",
+          "bit_rate": "806662",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf60.16.100"
+          }
+        }
+      }
+    },
+    {
+      "file": "captures/2-wreck-cursed_diner.mp4",
+      "world": "cursed_diner",
+      "game": "wreck",
+      "session": 1,
+      "frames": 223,
+      "duration": 7.433333333333334,
+      "marks": [
+        {
+          "frame": 0,
+          "time": 0,
+          "event": "between"
+        },
+        {
+          "frame": 66,
+          "time": 2.2,
+          "event": "entering"
+        },
+        {
+          "frame": 71,
+          "time": 2.3666666666666667,
+          "event": "playing"
+        },
+        {
+          "frame": 71,
+          "time": 2.3666666666666667,
+          "event": "pointer drag/release"
+        },
+        {
+          "frame": 80,
+          "time": 2.6666666666666665,
+          "event": "aftermath"
+        },
+        {
+          "frame": 159,
+          "time": 5.3,
+          "event": "result"
+        }
+      ],
+      "won": [
+        true,
+        null,
+        null
+      ],
+      "sha256": "6c1072404d301e194a0650e416ee8388c1f9805cc8e4a544081f92d71b97a541",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 114176,
+            "duration": "7.433333",
+            "bit_rate": "1084187",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "223",
+            "extradata_size": 50,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc60.31.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspaces/thing-mania/docs/demo/captures/2-wreck-cursed_diner.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "7.433333",
+          "size": "1010858",
+          "bit_rate": "1087918",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf60.16.100"
+          }
+        }
+      }
+    },
+    {
+      "file": "captures/2-beam-night_farm.mp4",
+      "world": "night_farm",
+      "game": "beam",
+      "session": 1,
+      "frames": 213,
+      "duration": 7.1,
+      "marks": [
+        {
+          "frame": 0,
+          "time": 0,
+          "event": "between"
+        },
+        {
+          "frame": 66,
+          "time": 2.2,
+          "event": "entering"
+        },
+        {
+          "frame": 71,
+          "time": 2.3666666666666667,
+          "event": "playing"
+        },
+        {
+          "frame": 129,
+          "time": 4.3,
+          "event": "aftermath"
+        },
+        {
+          "frame": 149,
+          "time": 4.966666666666667,
+          "event": "result"
+        }
+      ],
+      "won": [
+        true,
+        true,
+        null
+      ],
+      "sha256": "4f34539fd1ecf8ec978f9a9ff1c535680f0240f0bd7ba80b6db4ef3f0f3835c9",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 109056,
+            "duration": "7.100000",
+            "bit_rate": "841240",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "213",
+            "extradata_size": 50,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc60.31.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspaces/thing-mania/docs/demo/captures/2-beam-night_farm.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "7.100000",
+          "size": "749972",
+          "bit_rate": "845038",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf60.16.100"
+          }
+        }
+      }
+    },
+    {
+      "file": "captures/2-dodge-industrial_meltdown.mp4",
+      "world": "industrial_meltdown",
+      "game": "dodge",
+      "session": 1,
+      "frames": 503,
+      "duration": 16.766666666666666,
+      "marks": [
+        {
+          "frame": 0,
+          "time": 0,
+          "event": "between"
+        },
+        {
+          "frame": 66,
+          "time": 2.2,
+          "event": "entering"
+        },
+        {
+          "frame": 71,
+          "time": 2.3666666666666667,
+          "event": "playing"
+        },
+        {
+          "frame": 342,
+          "time": 11.4,
+          "event": "aftermath"
+        },
+        {
+          "frame": 374,
+          "time": 12.466666666666667,
+          "event": "result"
+        },
+        {
+          "frame": 439,
+          "time": 14.633333333333333,
+          "event": "summary"
+        }
+      ],
+      "won": [
+        true,
+        true,
+        true
+      ],
+      "sha256": "cf5c09af7d5d5f5e2b318ec31cf3d57af07abb0f8ecec593a5d1e714ddc0d70b",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 257536,
+            "duration": "16.766667",
+            "bit_rate": "826964",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "503",
+            "extradata_size": 50,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc60.31.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspaces/thing-mania/docs/demo/captures/2-dodge-industrial_meltdown.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "16.766667",
+          "size": "1739974",
+          "bit_rate": "830206",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf60.16.100"
+          }
+        }
+      }
+    }
+  ]
+}
