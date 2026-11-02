@@ -18,6 +18,6 @@ for c in m['clips']:
  for mark in c['marks']: rows.append([c['file'],30,c['frames'],f"{c['duration']:.6f}",tc(mark['frame']),mark['event'],'actual offline fixture; fixed-step browser capture',c['sha256']])
  rows.append([c['file'],30,c['frames'],f"{c['duration']:.6f}",tc(c['frames']),'END (exclusive)','actual offline fixture; fixed-step browser capture',c['sha256']])
 with (base/'manifests/source-clips.csv').open('w') as f:
- w=csv.writer(f);w.writerow(['source','fps','total_frames','duration_seconds','source_timecode','event','provenance','sha256']);w.writerows(rows)
+ w=csv.writer(f,lineterminator="\n");w.writerow(['source','fps','total_frames','duration_seconds','source_timecode','event','provenance','sha256']);w.writerows(rows)
 plan=list(csv.DictReader((base/'manifests/edit-plan.csv').open()));assert sum(int(r['frames_30fps']) for r in plan)==5400
 print('PASS: six worlds, six wins, hashes, 1080p CFR30, exact frames/durations, decode integrity, 180-second edit map')
