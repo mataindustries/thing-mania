@@ -5,6 +5,7 @@
  */
 (() => {
   'use strict';
+  const staticRelease = window.THING_STATIC_RELEASE === true;
   const canvas = document.querySelector('#game');
   let c = canvas.getContext('2d');
   const modal = document.querySelector('#modal');
@@ -500,7 +501,7 @@
     const reader = new FileReader();
     reader.onload = () => {
       state.photoBase64 = reader.result;
-      if (analyzeBtn) analyzeBtn.disabled = false;
+      if (analyzeBtn) analyzeBtn.disabled = staticRelease;
     };
     reader.readAsDataURL(file);
 
@@ -509,7 +510,7 @@
       state.photo=image;
       state.originalPhoto=image;
       state.photoLabel=file.name.replace(/\.[^.]+$/,'').slice(0,23)||'MY THING';
-      photoNote.textContent=`USING: ${state.photoLabel.toUpperCase()} · PHOTO READY FOR META ANALYSIS`;
+      photoNote.textContent=`USING: ${state.photoLabel.toUpperCase()} · ${staticRelease ? "LOCAL PHOTO · NO UPLOAD" : "PHOTO READY FOR META ANALYSIS"}`;
       if (roleBadge) roleBadge.textContent = `PROP: ${state.photoLabel.toUpperCase()} · AWAITING DIRECTOR ANALYSIS`;
       URL.revokeObjectURL(url);
     };
@@ -518,7 +519,7 @@
 
   if (analyzeBtn) {
     analyzeBtn.addEventListener('click', async () => {
-      if(state.busy||!['menu','summary'].includes(state.scene))return;
+      if(staticRelease || state.busy||!['menu','summary'].includes(state.scene))return;
       if (!userConsent.checked) {
         alert('User consent is required before transmitting or processing photo data.');
         return;
@@ -563,7 +564,7 @@
 
   // Explicit second opt-in: Muse understands the object; SAM isolates it.
   async function makeSamSticker() {
-    if (!['menu','summary'].includes(state.scene)||state.busy || !state.originalPhoto || !activePlan?.selected_object?.label) return;
+    if (staticRelease || !['menu','summary'].includes(state.scene)||state.busy || !state.originalPhoto || !activePlan?.selected_object?.label) return;
     audioUnlocked=true; tone(220,.15,'triangle',.04,2);
     const revision=state.photoRevision;
     if (!userConsent.checked) { alert('Approve photo transmission first.'); return; }
@@ -649,6 +650,18 @@
         return;
       }
 
+      if (staticRelease) {
+        try {
+          const response = await fetch(`fixtures/${fixtureId}.json`);
+          if (!response.ok) throw new Error('Fixture unavailable');
+          const valid = window.GamePlan.validateGamePlan(await response.json());
+          if (!valid.valid) throw new Error('Invalid fixture');
+          applyPlanToStages(valid.sanitized);
+          setStatus('DIRECTOR: OFFLINE FIXTURE LOADED / ZERO MODEL CALLS');
+        } catch (_) { activateFallback(); }
+        return;
+      }
+
       setStatus(`DIRECTOR: LOADING FIXTURE [${fixtureId.toUpperCase()}]...`);
       try {
         const resp = await fetch('/api/director/plan', {
@@ -687,6 +700,11 @@
   });
 
   async function fetchBudgetStatus() {
+    if (staticRelease) {
+      if (budgetStatus) budgetStatus.textContent = 'OFFLINE DEMO · ZERO MODEL CALLS · PHOTOS STAY ON THIS DEVICE';
+      setStatus('DIRECTOR: READY / OFFLINE DEMO');
+      return;
+    }
     try {
       const resp = await fetch('/api/status');
       const data = await resp.json();

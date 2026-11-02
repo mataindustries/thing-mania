@@ -13,3 +13,6 @@ node_modules/
 # OS metadata
 .DS_Store
 Thumbs.db
+
+# Generated public release
+dist/

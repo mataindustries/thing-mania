@@ -1,4 +1,13 @@
-# THING//MANIA — Pocket Mayhem v0.4
+# THING//MANIA — Hackathon release
+
+Public release: zero-cost static arcade with six environments, offline fixtures,
+original DaemonV12 OST, stage remixes and Chaos Report. No public live inference.
+
+See [release architecture, deployment, attribution and known limitations](docs/RELEASE.md).
+Build with `npm run build`; publish **only `dist/`** to Cloudflare Pages.
+The private live demonstration remains separate; never expose Codespaces ports.
+
+The development notes below describe the private Node workflow.
 
 **Photograph a household object. Turn it into the star of three ridiculous microgames.**
 

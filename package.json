@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "node --test test/*.test.js",
-    "check": "for f in game.js gameplan.js stage_machine.js music.js server.js meta_adapter.js sam_adapter.js test/*.test.js; do node --check \"$f\" || exit 1; done"
+    "check": "for f in game.js gameplan.js stage_machine.js music.js server.js meta_adapter.js sam_adapter.js test/*.test.js; do node --check \"$f\" || exit 1; done",
+    "build": "node scripts/build-static.js"
   },
   "keywords": [
     "meta-hackathon",
@@ -20,5 +21,8 @@
   "dependencies": {
     "@meta-sam/parser": "^0.1.0",
     "openai": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=22.9.0"
   }
 }
